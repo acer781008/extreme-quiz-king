@@ -1,7 +1,6 @@
 {
   "name": "extreme-quiz-king",
-  "version": "1.0.0",
-  "description": "極速答題王 多人測試版 V1",
+  "version": "1.2.0",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
