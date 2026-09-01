@@ -1,6 +1,7 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>極速答題王－主控台</title><style>
 *{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,"Noto Sans TC",sans-serif;color:#25304a;background:#eef6ff}button,input,select,textarea{font:inherit}button{cursor:pointer}.top{background:#26365e;color:#fff;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px}.top h1{font-size:20px;margin:0}.wrap{max-width:1100px;margin:auto;padding:14px}.card{background:#fff;border:1px solid #d9e4f2;border-radius:18px;padding:14px;margin-bottom:12px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.row{display:flex;gap:8px;flex-wrap:wrap}.btn{border:0;border-radius:12px;padding:10px 14px;font-weight:800;background:#5a63e8;color:white}.btn.alt{background:#eef0ff;color:#4048ad}.btn.danger{background:#d95362}.btn.green{background:#168b52}.field label{display:block;font-size:13px;font-weight:800;margin-bottom:4px}.field input,.field select,.field textarea{width:100%;border:1px solid #cad7e7;border-radius:10px;padding:9px;background:white}.muted{color:#6b7690;font-size:13px}.rank{width:100%;border-collapse:collapse}.rank th,.rank td{padding:8px;border-bottom:1px solid #e5ebf4;text-align:left}.pill{padding:5px 9px;border-radius:999px;background:#eef1ff;font-weight:800;font-size:13px}@media(max-width:650px){.grid{grid-template-columns:1fr}.wrap{padding:9px}.top{padding:10px}.rank{font-size:13px}}
-</style></head><body>
+.loginGate{position:fixed;inset:0;background:#eef6ff;z-index:9999;display:flex;align-items:center;justify-content:center;padding:18px}.loginBox{width:min(420px,100%);background:white;border:1px solid #d9e4f2;border-radius:22px;padding:22px;box-shadow:0 12px 35px #25304a22}.loginBox h2{margin-top:0}.loginBox input{width:100%;padding:12px;border:1px solid #cad7e7;border-radius:12px;margin:8px 0 12px}.loginErr{color:#c43d4b;font-weight:800;font-size:14px}</style></head><body>
+<div id="loginGate" class="loginGate"><div class="loginBox"><h2>🔐 極速答題王－主控登入</h2><p class="muted">請輸入主控密碼才能進入主控台。</p><input id="adminPassword" type="password" placeholder="主控密碼" autocomplete="current-password"><button id="loginBtn" class="btn" style="width:100%">登入主控台</button><p id="loginErr" class="loginErr"></p></div></div>
 <div class="top"><h1>⚡ 極速答題王－主控台</h1><a class="btn alt" href="https://game-lobby-eo8o.onrender.com/" style="text-decoration:none">🏠 返回遊戲大廳</a></div>
 <div class="wrap"><div class="card"><div class="row"><button id="new" class="btn">＋ 新增房間</button><span id="room" class="pill">尚未建立房間</span><button id="copyLink" class="btn alt">🔗 複製玩家連結</button><button id="copyText" class="btn alt">📋 複製分享文字</button></div></div>
 <div class="card"><h2>⚙️ 遊戲設定</h2><div class="grid">
@@ -21,15 +22,27 @@
 <div class="card"><div class="row" style="justify-content:space-between"><h2>🏆 即時排行榜 <span id="count" class="muted">0人</span></h2><button id="copyRank" class="btn alt">📋 複製排行榜</button></div><div style="overflow:auto"><table class="rank"><thead><tr><th>排名</th><th>玩家</th><th>答對</th><th>答錯</th><th>未作答</th><th>分數</th></tr></thead><tbody id="rank"></tbody></table></div></div>
 <div class="card"><div class="row"><button id="start" class="btn green">▶️ 開始遊戲</button><button id="end" class="btn danger">⏹️ 結束遊戲</button><button id="del" class="btn danger">🗑️ 刪除房間</button></div><p id="msg" class="muted"></p></div></div>
 <script src="/socket.io/socket.io.js"></script><script>
-const s=io();let code="",lastRoom=null;const $=id=>document.getElementById(id);
+const s=io();let code="",lastRoom=null,adminToken=sessionStorage.getItem("eq_admin_token")||"";const $=id=>document.getElementById(id);
+async function adminLogin(){
+ const password=$("adminPassword").value;
+ $("loginErr").textContent="";
+ try{
+  const r=await fetch("/api/admin-login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({password})});
+  const j=await r.json();
+  if(!r.ok||!j.ok){$("loginErr").textContent=j.message||"登入失敗";return}
+  adminToken=j.token;sessionStorage.setItem("eq_admin_token",adminToken);$("loginGate").style.display="none";
+ }catch(e){$("loginErr").textContent="目前無法登入，請稍後再試"}
+}
+$("loginBtn").onclick=adminLogin;$("adminPassword").addEventListener("keydown",e=>{if(e.key==="Enter")adminLogin()});
+if(adminToken)$("loginGate").style.display="none";
 for(let i=3;i<=30;i++)$("questionSeconds").insertAdjacentHTML("beforeend",`<option ${i===15?"selected":""}>${i}</option>`);
 function settings(){let o={};["category","difficulty","fallSpeed","questionSeconds","correctPoints","wrongPoints","timeoutPoints","wrongAction","finishMode","duration","targetCorrect","bg","shape","startAt","note"].forEach(k=>o[k]=$(k).value);return o}
 function render(r){lastRoom=r;$("count").textContent=r.count+"人";$("rank").innerHTML=r.ranking.map((p,i)=>`<tr><td>${i+1}</td><td>${p.name}</td><td>${p.correct}</td><td>${p.wrong}</td><td>${p.timeout}</td><td>${p.score}</td></tr>`).join("");$("msg").textContent="狀態："+({waiting:"等待開始",countdown:"同步倒數中",playing:"遊戲中",ended:"比賽結束"}[r.status]||r.status)}
-$("new").onclick=()=>s.emit("admin:create",{},x=>{code=x.code;$("room").textContent="房號："+code;render(x.room)});
-$("save").onclick=()=>code&&s.emit("admin:save",{code,settings:settings()},x=>$("msg").textContent=x.ok?"設定已儲存":"遊戲中不可修改設定");
-$("start").onclick=()=>code&&s.emit("admin:start",{code},()=>{});
-$("end").onclick=()=>code&&s.emit("admin:end",{code});
-$("del").onclick=()=>{if(code&&confirm("確定刪除房間？刪除後本場資料無法恢復。"))s.emit("admin:delete",{code},()=>location.reload())};
+$("new").onclick=()=>s.emit("admin:create",{adminToken},x=>{code=x.code;$("room").textContent="房號："+code;render(x.room)});
+$("save").onclick=()=>code&&s.emit("admin:save",{code,settings:settings(),adminToken},x=>$("msg").textContent=x.ok?"設定已儲存":"遊戲中不可修改設定");
+$("start").onclick=()=>code&&s.emit("admin:start",{code,adminToken},()=>{});
+$("end").onclick=()=>code&&s.emit("admin:end",{code,adminToken});
+$("del").onclick=()=>{if(code&&confirm("確定刪除房間？刪除後本場資料無法恢復。"))s.emit("admin:delete",{code,adminToken},()=>location.reload())};
 $("copyLink").onclick=async()=>{if(!code)return;await navigator.clipboard.writeText(location.origin+"/?room="+code);$("msg").textContent="玩家連結已複製"};
 $("copyText").onclick=async()=>{if(!code)return;let a=settings();await navigator.clipboard.writeText(`⚡極速答題王\n房號：${code}\n${a.startAt?"開賽："+a.startAt+"\n":""}${a.note?"備註："+a.note+"\n":""}玩家連結：${location.origin}/?room=${code}`);$("msg").textContent="分享文字已複製"};
 $("copyRank").onclick=async()=>{if(!lastRoom)return;let t=lastRoom.ranking.map((p,i)=>`第${i+1}名｜玩家：${p.name}｜答對${p.correct}題｜答錯${p.wrong}題｜未作答${p.timeout}題｜${p.score}分`).join("\n");await navigator.clipboard.writeText(t);$("msg").textContent="排行榜已複製"};
