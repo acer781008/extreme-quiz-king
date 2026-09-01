@@ -1,0 +1,39 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>極速答題王－主控台</title><style>
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,"Noto Sans TC",sans-serif;color:#25304a;background:#eef6ff}button,input,select,textarea{font:inherit}button{cursor:pointer}.top{background:#26365e;color:#fff;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px}.top h1{font-size:20px;margin:0}.wrap{max-width:1100px;margin:auto;padding:14px}.card{background:#fff;border:1px solid #d9e4f2;border-radius:18px;padding:14px;margin-bottom:12px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.row{display:flex;gap:8px;flex-wrap:wrap}.btn{border:0;border-radius:12px;padding:10px 14px;font-weight:800;background:#5a63e8;color:white}.btn.alt{background:#eef0ff;color:#4048ad}.btn.danger{background:#d95362}.btn.green{background:#168b52}.field label{display:block;font-size:13px;font-weight:800;margin-bottom:4px}.field input,.field select,.field textarea{width:100%;border:1px solid #cad7e7;border-radius:10px;padding:9px;background:white}.muted{color:#6b7690;font-size:13px}.rank{width:100%;border-collapse:collapse}.rank th,.rank td{padding:8px;border-bottom:1px solid #e5ebf4;text-align:left}.pill{padding:5px 9px;border-radius:999px;background:#eef1ff;font-weight:800;font-size:13px}@media(max-width:650px){.grid{grid-template-columns:1fr}.wrap{padding:9px}.top{padding:10px}.rank{font-size:13px}}
+</style></head><body>
+<div class="top"><h1>⚡ 極速答題王－主控台</h1><a class="btn alt" href="https://game-lobby-eo8o.onrender.com/" style="text-decoration:none">🏠 返回遊戲大廳</a></div>
+<div class="wrap"><div class="card"><div class="row"><button id="new" class="btn">＋ 新增房間</button><span id="room" class="pill">尚未建立房間</span><button id="copyLink" class="btn alt">🔗 複製玩家連結</button><button id="copyText" class="btn alt">📋 複製分享文字</button></div></div>
+<div class="card"><h2>⚙️ 遊戲設定</h2><div class="grid">
+<div class="field"><label>題庫</label><select id="category"><option value="math">🔢 數學</option><option value="chinese">🀄 國文文字</option><option value="classic">📜 國學／詩詞</option><option value="life">🌱 生活常識</option><option value="knowledge">🌏 地理／自然／知識</option><option value="fun">🧠 趣味題庫</option></select></div>
+<div class="field"><label>難度</label><select id="difficulty"><option>easy</option><option selected>normal</option><option>hard</option><option>random</option></select></div>
+<div class="field"><label>掉落速度</label><select id="fallSpeed"><option value="slow">慢</option><option value="medium" selected>中</option><option value="fast">快</option></select></div>
+<div class="field"><label>每題倒數</label><select id="questionSeconds"></select></div>
+<div class="field"><label>答對加分</label><input id="correctPoints" type="number" value="10"></div><div class="field"><label>答錯扣分</label><input id="wrongPoints" type="number" value="-5"></div>
+<div class="field"><label>時間到未作答</label><input id="timeoutPoints" type="number" value="-5"></div>
+<div class="field"><label>答錯後</label><select id="wrongAction"><option value="continue">繼續本題</option><option value="next">立即下一題</option></select></div>
+<div class="field"><label>完成條件</label><select id="finishMode"><option value="time">時間到結束</option><option value="target">指定答對題數</option></select></div>
+<div class="field"><label>遊戲時間</label><select id="duration"><option value="3">3分鐘</option><option value="5">5分鐘</option><option value="10" selected>10分鐘</option><option value="15">15分鐘</option><option value="20">20分鐘</option><option value="30">30分鐘</option><option value="45">45分鐘</option><option value="60">60分鐘</option></select></div>
+<div class="field"><label>指定答對題數</label><input id="targetCorrect" type="number" value="20" min="1"></div>
+<div class="field"><label>背景</label><select id="bg"><option value="sky">🌤️ 藍天草地</option><option value="stars">🌌 星空夜晚</option><option value="forest">🌲 森林綠野</option><option value="ocean">🐠 海底世界</option><option value="candy">🍭 糖果樂園</option><option value="space">🚀 太空冒險</option></select></div>
+<div class="field"><label>答案形狀</label><select id="shape"><option value="star">⭐ 星星</option><option value="circle">● 圓形</option><option value="square">■ 方形</option><option value="diamond">◆ 菱形</option><option value="heart">♥ 愛心</option><option value="hex">⬡ 六邊形</option><option value="balloon">🎈 氣球</option><option value="cloud">☁️ 雲朵</option></select></div>
+<div class="field"><label>開賽日期＋時間（選填）</label><input id="startAt" type="datetime-local"></div><div class="field"><label>備註</label><textarea id="note" rows="2"></textarea></div></div>
+<div class="row" style="margin-top:12px"><button id="save" class="btn">💾 儲存設定</button><button id="rules" class="btn alt">📖 規則說明</button><button id="scoreInfo" class="btn alt">💰 分數說明</button></div></div>
+<div class="card"><div class="row" style="justify-content:space-between"><h2>🏆 即時排行榜 <span id="count" class="muted">0人</span></h2><button id="copyRank" class="btn alt">📋 複製排行榜</button></div><div style="overflow:auto"><table class="rank"><thead><tr><th>排名</th><th>玩家</th><th>答對</th><th>答錯</th><th>未作答</th><th>分數</th></tr></thead><tbody id="rank"></tbody></table></div></div>
+<div class="card"><div class="row"><button id="start" class="btn green">▶️ 開始遊戲</button><button id="end" class="btn danger">⏹️ 結束遊戲</button><button id="del" class="btn danger">🗑️ 刪除房間</button></div><p id="msg" class="muted"></p></div></div>
+<script src="/socket.io/socket.io.js"></script><script>
+const s=io();let code="",lastRoom=null;const $=id=>document.getElementById(id);
+for(let i=3;i<=30;i++)$("questionSeconds").insertAdjacentHTML("beforeend",`<option ${i===15?"selected":""}>${i}</option>`);
+function settings(){let o={};["category","difficulty","fallSpeed","questionSeconds","correctPoints","wrongPoints","timeoutPoints","wrongAction","finishMode","duration","targetCorrect","bg","shape","startAt","note"].forEach(k=>o[k]=$(k).value);return o}
+function render(r){lastRoom=r;$("count").textContent=r.count+"人";$("rank").innerHTML=r.ranking.map((p,i)=>`<tr><td>${i+1}</td><td>${p.name}</td><td>${p.correct}</td><td>${p.wrong}</td><td>${p.timeout}</td><td>${p.score}</td></tr>`).join("");$("msg").textContent="狀態："+({waiting:"等待開始",countdown:"同步倒數中",playing:"遊戲中",ended:"比賽結束"}[r.status]||r.status)}
+$("new").onclick=()=>s.emit("admin:create",{},x=>{code=x.code;$("room").textContent="房號："+code;render(x.room)});
+$("save").onclick=()=>code&&s.emit("admin:save",{code,settings:settings()},x=>$("msg").textContent=x.ok?"設定已儲存":"遊戲中不可修改設定");
+$("start").onclick=()=>code&&s.emit("admin:start",{code},()=>{});
+$("end").onclick=()=>code&&s.emit("admin:end",{code});
+$("del").onclick=()=>{if(code&&confirm("確定刪除房間？刪除後本場資料無法恢復。"))s.emit("admin:delete",{code},()=>location.reload())};
+$("copyLink").onclick=async()=>{if(!code)return;await navigator.clipboard.writeText(location.origin+"/?room="+code);$("msg").textContent="玩家連結已複製"};
+$("copyText").onclick=async()=>{if(!code)return;let a=settings();await navigator.clipboard.writeText(`⚡極速答題王\n房號：${code}\n${a.startAt?"開賽："+a.startAt+"\n":""}${a.note?"備註："+a.note+"\n":""}玩家連結：${location.origin}/?room=${code}`);$("msg").textContent="分享文字已複製"};
+$("copyRank").onclick=async()=>{if(!lastRoom)return;let t=lastRoom.ranking.map((p,i)=>`第${i+1}名｜玩家：${p.name}｜答對${p.correct}題｜答錯${p.wrong}題｜未作答${p.timeout}題｜${p.score}分`).join("\n");await navigator.clipboard.writeText(t);$("msg").textContent="排行榜已複製"};
+$("rules").onclick=()=>alert("直接點擊掉落的正確答案。答錯後依本房設定繼續本題或換題；時間到未作答會依設定扣分。");
+$("scoreInfo").onclick=()=>{let a=settings();alert(`答對：${a.correctPoints}分\n答錯：${a.wrongPoints}分\n時間到未作答：${a.timeoutPoints}分`)};
+s.on("room:update",render);s.on("game:countdown",()=>$("msg").textContent="所有玩家同步 3、2、1…");s.on("room:deleted",()=>location.reload());
+</script></body></html>

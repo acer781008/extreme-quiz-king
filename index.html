@@ -1,60 +1,36 @@
-<!doctype html>
-<html lang="zh-Hant">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>掉落點答案 V0.3</title>
-<style>
-:root{--ink:#24324a;--line:#cfe0ee;--accent:#5c63f2;--ok:#238b57;--bad:#db4d5c}
-*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,"Segoe UI","Noto Sans TC",sans-serif;color:var(--ink);background:linear-gradient(#dff6ff,#fff5d5);min-height:100vh}
-.wrap{max-width:1080px;margin:auto;padding:16px}.head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.head h1{margin:0;font-size:clamp(25px,4vw,40px)}.tag{background:#fff;padding:8px 12px;border-radius:999px;border:1px solid var(--line);font-weight:900}
-.layout{display:grid;grid-template-columns:315px 1fr;gap:15px;margin-top:15px}.card{background:#ffffffed;border:1px solid var(--line);border-radius:22px;padding:15px;box-shadow:0 10px 25px #56789118}
-h2{margin:0 0 10px}label{display:block;font-size:14px;font-weight:800;margin:10px 0 5px}select,input,button{width:100%;min-height:44px;border:1px solid var(--line);border-radius:13px;padding:9px 11px;font-size:16px;background:#fff;color:var(--ink)}
-button{cursor:pointer;font-weight:900}.start{margin-top:14px;background:var(--accent);color:#fff;border:0}.custom{display:none;margin-top:6px}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px}.stat{text-align:center;background:#f4f8fb;padding:9px;border-radius:13px}.stat small{display:block;color:#718096}.stat b{font-size:21px}
-.gamebar{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}.timer{background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 12px;font-weight:900}.question{margin:8px 0 10px;background:#fff8df;border:1px solid #efdca5;border-radius:17px;padding:12px;text-align:center;font-size:clamp(29px,5vw,47px);font-weight:1000}
-.field{height:460px;position:relative;overflow:hidden;border:2px solid #b6d8eb;border-radius:22px;background:radial-gradient(circle at 20% 10%,#fff 0 34px,transparent 35px),radial-gradient(circle at 78% 16%,#fff 0 42px,transparent 43px),linear-gradient(#73caff 0 80%,#89d179 80%)}
-.hint{position:absolute;z-index:4;top:9px;left:0;right:0;text-align:center;font-weight:900;color:#28597d}.drop{position:absolute;width:92px;height:62px;border:0;background:transparent;font-size:20px;font-weight:1000;filter:drop-shadow(0 4px 3px #0002);touch-action:manipulation}
-.boom{animation:boom .28s ease forwards;pointer-events:none}@keyframes boom{0%{transform:scale(1);opacity:1}55%{transform:scale(1.65) rotate(12deg);opacity:.8}100%{transform:scale(.1) rotate(-20deg);opacity:0}}
-.status{min-height:30px;text-align:center;font-weight:900;padding-top:6px}.ok{color:var(--ok)}.bad{color:var(--bad)}.note{font-size:12px;line-height:1.55;color:#718096;margin-top:10px}
-@media(max-width:790px){.layout{grid-template-columns:1fr}.settings{order:2}.game{order:1}.field{height:420px}}
-</style></head>
-<body><div class="wrap">
-<div class="head"><h1>⭐🎈 掉落點答案</h1><div class="tag">單機測試版 V0.3</div></div>
-<div class="layout">
-<section class="card settings"><h2>遊戲設定</h2>
-<label>掉落速度</label><select id="speed"><option value=".7">慢</option><option value="1.05" selected>中</option><option value="1.5">快</option></select>
-<label>題目難度</label><select id="difficulty"><option value="easy">簡單</option><option value="normal" selected>普通</option><option value="hard">困難</option></select>
-<label>題目倒數（3～30秒）</label><select id="countdown"></select>
-<label>題型</label><select id="type"><option value="mix">＋－×÷ 混合</option><option value="add">加法</option><option value="sub">減法</option><option value="mul">乘法</option><option value="div">除法</option></select>
-<label>同時掉落答案數</label><select id="choices"><option>5</option><option selected>6</option><option>7</option><option>8</option></select>
-<label>答錯後</label><select id="wrongAction"><option value="continue" selected>繼續本題</option><option value="next">立即換下一題</option></select>
-<label>每答錯 1 次扣分</label><select id="penalty"><option value="0">不扣分</option><option value="5" selected>-5 分</option><option value="10">-10 分</option><option value="custom">自訂</option></select>
-<input id="customPenalty" class="custom" type="number" min="0" max="999" value="3" placeholder="輸入扣分">
-<button id="start" class="start">開始 / 重新開始</button>
-<div class="stats"><div class="stat"><small>分數</small><b id="score">0</b></div><div class="stat"><small>答對</small><b id="correct">0</b></div><div class="stat"><small>答錯</small><b id="wrong">0</b></div></div>
-<div class="note">答錯會爆掉並依設定扣分。若選「繼續本題」，倒數不中斷；答案掉完會持續補新答案，直到答對或倒數歸零。</div>
-</section>
-<section class="card game"><div class="gamebar"><h2>目前題目</h2><div class="timer">⏳ <span id="timer">10</span> 秒</div></div>
-<div id="question" class="question">按「開始」出題</div><div id="field" class="field"><div class="hint">直接點擊正確答案！</div></div><div id="status" class="status"></div></section>
-</div></div>
-<script>
-(()=>{const $=id=>document.getElementById(id),field=$('field'),status=$('status'),cd=$('countdown');
-for(let i=3;i<=30;i++){let o=document.createElement('option');o.value=i;o.textContent=i+' 秒';if(i===10)o.selected=true;cd.appendChild(o)}
-$('penalty').onchange=()=>{$('customPenalty').style.display=$('penalty').value==='custom'?'block':'none'};
-let running=false,score=0,correct=0,wrong=0,answer=0,timeLeft=10,timerId=null,raf=null,drops=[],locked=false,last=0,batch=0;
-const rnd=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
-function stats(){$('score').textContent=score;$('correct').textContent=correct;$('wrong').textContent=wrong}
-function penalty(){return $('penalty').value==='custom'?Math.max(0,+$('customPenalty').value||0):+$('penalty').value}
-function question(){const d=$('difficulty').value,t=$('type').value,max=d==='easy'?10:d==='normal'?30:80,ops=t==='mix'?['add','sub','mul','div']:[t],op=ops[rnd(0,ops.length-1)];let a,b,s;if(op==='add'){a=rnd(1,max);b=rnd(1,max);answer=a+b;s='+'}if(op==='sub'){a=rnd(1,max);b=rnd(1,a);answer=a-b;s='−'}if(op==='mul'){let m=d==='easy'?9:d==='normal'?12:20;a=rnd(2,m);b=rnd(2,m);answer=a*b;s='×'}if(op==='div'){let m=d==='easy'?9:d==='normal'?12:20;b=rnd(2,m);answer=rnd(2,m);a=b*answer;s='÷'}$('question').textContent=`${a} ${s} ${b} = ?`}
-function vals(n){let s=new Set([answer]);while(s.size<n){let spread=Math.max(8,Math.ceil(Math.abs(answer)*.35)),v=answer+rnd(-spread,spread);if(v<0)v=rnd(0,spread);s.add(v)}return[...s].sort(()=>Math.random()-.5)}
-function addBatch(){if(locked)return;batch++;let n=+$('choices').value,arr=vals(n),cols=Math.min(4,n);arr.forEach((v,i)=>{let node=document.createElement('button');node.className='drop';node.textContent=(Math.random()>.5?'⭐ ':'🎈 ')+v;let col=i%cols,row=Math.floor(i/cols),left=5+col*(90/(cols-1||1)),y=-80-row*88-rnd(0,45);node.style.left=`calc(${left}% - 46px)`;node.style.top=y+'px';field.appendChild(node);let d={node,value:v,y,dead:false,batch};drops.push(d);node.onclick=()=>clickDrop(d)})}
-function clickDrop(d){if(!running||locked||d.dead)return;if(d.value===answer){score+=10;correct++;stats();status.className='status ok';status.textContent='✅ 答對！+10 分';boom(d);finish(500)}else{wrong++;score-=penalty();stats();status.className='status bad';status.textContent=`❌ 答錯！-${penalty()} 分`;boom(d);if($('wrongAction').value==='next')finish(500)}}
-function boom(d){d.dead=true;d.node.textContent='💥';d.node.classList.add('boom');setTimeout(()=>d.node.remove(),280)}
-function animate(ts){if(!running||locked)return;if(!last)last=ts;let dt=Math.min(32,ts-last);last=ts,speed=+$('speed').value*dt*.09,h=field.clientHeight;drops.forEach(d=>{if(!d.dead){d.y+=speed;d.node.style.top=d.y+'px';if(d.y>h+70){d.dead=true;d.node.remove()}}});drops=drops.filter(d=>!d.dead);if(drops.length===0&&timeLeft>0)addBatch();raf=requestAnimationFrame(animate)}
-function startTimer(){timerId=setInterval(()=>{if(!running||locked)return;timeLeft--;$('timer').textContent=Math.max(0,timeLeft);if(timeLeft<=0){status.className='status bad';status.textContent='⏰ 時間到！正確答案是 '+answer;finish(850)}},1000)}
-function finish(delay){if(locked)return;locked=true;clearInterval(timerId);cancelAnimationFrame(raf);setTimeout(()=>{if(running)newRound()},delay)}
-function clearDrops(){drops.forEach(d=>d.node.remove());drops=[]}
-function newRound(){clearInterval(timerId);cancelAnimationFrame(raf);clearDrops();locked=false;last=0;batch=0;question();timeLeft=+$('countdown').value;$('timer').textContent=timeLeft;addBatch();startTimer();raf=requestAnimationFrame(animate)}
-$('start').onclick=()=>{running=true;score=correct=wrong=0;stats();status.className='status';status.textContent='開始！';newRound()}
-})();
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>極速答題王</title><style>
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,"Noto Sans TC",sans-serif;color:#25304a;background:#eef6ff}button,input,select,textarea{font:inherit}button{cursor:pointer}.top{background:#26365e;color:#fff;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px}.top h1{font-size:20px;margin:0}.wrap{max-width:1100px;margin:auto;padding:14px}.card{background:#fff;border:1px solid #d9e4f2;border-radius:18px;padding:14px;margin-bottom:12px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.row{display:flex;gap:8px;flex-wrap:wrap}.btn{border:0;border-radius:12px;padding:10px 14px;font-weight:800;background:#5a63e8;color:white}.btn.alt{background:#eef0ff;color:#4048ad}.btn.danger{background:#d95362}.btn.green{background:#168b52}.field label{display:block;font-size:13px;font-weight:800;margin-bottom:4px}.field input,.field select,.field textarea{width:100%;border:1px solid #cad7e7;border-radius:10px;padding:9px;background:white}.muted{color:#6b7690;font-size:13px}.rank{width:100%;border-collapse:collapse}.rank th,.rank td{padding:8px;border-bottom:1px solid #e5ebf4;text-align:left}.pill{padding:5px 9px;border-radius:999px;background:#eef1ff;font-weight:800;font-size:13px}@media(max-width:650px){.grid{grid-template-columns:1fr}.wrap{padding:9px}.top{padding:10px}.rank{font-size:13px}}
+
+.game{position:relative;overflow:hidden;min-height:520px;border-radius:20px;background:linear-gradient(#bfeaff,#e7f7c5);border:1px solid #cadbea}.question{position:relative;z-index:5;margin:10px;background:#fffffff2;border-radius:16px;padding:12px;text-align:center;font-weight:900;font-size:clamp(21px,5vw,34px)}.hud{display:flex;justify-content:space-around;gap:6px;flex-wrap:wrap;padding:8px}.drop{position:absolute;top:120px;min-width:72px;max-width:150px;min-height:58px;padding:10px;border:3px solid #fff;border-radius:22px;background:#ffdd67;box-shadow:0 3px 10px #0003;font-weight:900;font-size:clamp(16px,4vw,23px);display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.15;overflow-wrap:anywhere;z-index:2}.long{border-radius:18px;max-width:132px;min-height:76px}.overlay{position:absolute;inset:0;z-index:20;background:#1e2b4ddd;color:#fff;display:flex;align-items:center;justify-content:center;text-align:center;font-size:64px;font-weight:1000}.hidden{display:none!important}@media(max-width:650px){.game{min-height:560px}.question{font-size:24px}.drop{max-width:118px;font-size:17px}.hud{font-size:13px}}
+</style></head><body><div class="top"><h1>⚡ 極速答題王</h1><button id="info" class="btn alt">ⓘ 規則／分數</button></div><div class="wrap">
+<div id="join" class="card"><h2>加入遊戲</h2><p id="roomLabel" class="pill"></p><div class="field"><label>玩家名稱</label><input id="name" maxlength="20" placeholder="請輸入名稱"></div><button id="joinBtn" class="btn" style="margin-top:10px">加入遊戲</button><p id="joinMsg" class="muted"></p></div>
+<div id="wait" class="card hidden"><h2>⏳ 等待比賽開始</h2><p id="waitText"></p><div class="row"><button id="waitRules" class="btn alt">📖 規則說明</button><button id="waitScore" class="btn alt">💰 分數說明</button></div><p id="note"></p></div>
+<div id="play" class="hidden"><div class="hud"><span class="pill" id="gameTime">比賽 --:--</span><span class="pill" id="qTime">本題 --</span><span class="pill" id="myRank">🏆 --</span><span class="pill" id="score">⭐ 0分</span></div><div class="game" id="game"><div class="question" id="question"></div><div id="countdown" class="overlay hidden"></div></div><div class="card"><span id="stats">答對0｜答錯0｜未作答0</span> <button id="showRank" class="btn alt" style="width:auto">🏆 排行榜</button></div></div>
+<div id="result" class="card hidden"><h2>🏆 比賽結束！</h2><div id="myResult"></div><button id="fullRank" class="btn">查看完整排行榜</button></div>
+</div><script src="/socket.io/socket.io.js"></script><script>
+const s=io(),$=id=>document.getElementById(id),code=new URLSearchParams(location.search).get("room")||"";let token=localStorage.getItem("eq_"+code)||"",room=null,me=null,qTimer=null,fallRAF=null,current=null,answered=false;
+$("roomLabel").textContent="房號："+(code||"無");const banks={
+math:["math"],chinese:[["「開心」的近義詞？","快樂",["難過","生氣","害怕","安靜"]],["畫蛇添＿","足",["手","尾","頭","花"]],["守株待＿","兔",["鹿","羊","馬","鳥"]]],
+classic:[["「床前明月光」下一句？","疑是地上霜",["舉頭望明月","低頭思故鄉","春眠不覺曉","處處聞啼鳥"]],["人之初，下一句？","性本善",["習相遠","貴以專","性乃遷","教之道"]],["教之道，下一句？","貴以專",["性本善","習相遠","性乃遷","擇鄰處"]]],
+life:[["下雨天通常使用什麼遮雨？","雨傘",["湯匙","枕頭","尺","碗"]],["紅燈時應該？","停下等待",["快速通過","加速","閉眼走","倒著走"]]],
+knowledge:[["台灣最高的山是？","玉山",["阿里山","陽明山","合歡山","雪山"]],["地球繞著什麼運行？","太陽",["月球","火星","木星","北極星"]],["太陽系最大的行星？","木星",["地球","火星","水星","金星"]]],
+fun:[["🐶 代表哪種動物？","狗",["貓","兔子","老虎","熊"]],["哪一個是交通工具？","公車",["鉛筆","杯子","枕頭","書本"]]]
+};
+function mathQ(){let a=Math.ceil(Math.random()*30),b=Math.ceil(Math.random()*20),ops=["+","-","×"];let op=ops[Math.floor(Math.random()*ops.length)],ans;if(op==="+")ans=a+b;if(op==="-"){if(b>a)[a,b]=[b,a];ans=a-b}if(op==="×"){a=Math.ceil(Math.random()*9);b=Math.ceil(Math.random()*9);ans=a*b}let ds=new Set();while(ds.size<7){let x=ans+Math.floor(Math.random()*17)-8;if(x!==ans&&x>=0)ds.add(String(x))}return [`${a} ${op} ${b} = ?`,String(ans),[...ds]]}
+function getQ(){if(room.settings.category==="math")return mathQ();let a=banks[room.settings.category]||banks.life;return a[Math.floor(Math.random()*a.length)]}
+function join(){s.emit("player:join",{code,name:$("name").value,token},x=>{if(!x.ok){$("joinMsg").textContent=x.msg;return}token=x.token;localStorage.setItem("eq_"+code,token);me=x.player;room=x.room;$("join").classList.add("hidden");if(room.status==="playing")startUI();else waitUI()})}
+$("joinBtn").onclick=join;if(token)join();
+function waitUI(){$("wait").classList.remove("hidden");$("waitText").textContent=`玩家：${me.name}｜目前人數：${room.count}人｜等待主控開始…`;$("note").textContent=room.settings.note?("📝 "+room.settings.note):""}
+function info(){if(!room)return;alert(`規則：直接點擊掉落的正確答案。\n答對：${room.settings.correctPoints}分\n答錯：${room.settings.wrongPoints}分\n時間到：${room.settings.timeoutPoints}分`)}
+$("info").onclick=info;$("waitRules").onclick=info;$("waitScore").onclick=info;
+s.on("room:update",r=>{room=r;if(me){let p=r.ranking.find(x=>x.name===me.name);if(p){me={...me,...p};renderMe()}}});
+s.on("game:countdown",()=>{$("wait").classList.add("hidden");$("play").classList.remove("hidden");let n=3;$("countdown").classList.remove("hidden");$("countdown").textContent=n;let t=setInterval(()=>{n--;if(n>0)$("countdown").textContent=n;else if(n===0)$("countdown").textContent="GO！";else{clearInterval(t);$("countdown").classList.add("hidden")}},700)});
+s.on("game:start",r=>{room=r;startUI()});s.on("game:ended",x=>showResult(x.ranking));s.on("room:deleted",()=>{alert("主控已刪除此房間");location.href=location.pathname});
+function startUI(){$("join").classList.add("hidden");$("wait").classList.add("hidden");$("play").classList.remove("hidden");nextQ();tickGame()}
+function renderMe(){if(!room||!me)return;let i=room.ranking.findIndex(x=>x.name===me.name);$("myRank").textContent="🏆 第"+(i+1)+"名";$("score").textContent="⭐ "+me.score+"分";$("stats").textContent=`答對${me.correct}｜答錯${me.wrong}｜未作答${me.timeout}`}
+function tickGame(){setInterval(()=>{if(!room||room.status!=="playing")return;let sec=room.endsAt?Math.max(0,Math.ceil((room.endsAt-Date.now())/1000)):0;$("gameTime").textContent=room.endsAt?`比賽 ${String(Math.floor(sec/60)).padStart(2,"0")}:${String(sec%60).padStart(2,"0")}`:"比賽進行中"},500)}
+function nextQ(){clearInterval(qTimer);cancelAnimationFrame(fallRAF);document.querySelectorAll(".drop").forEach(x=>x.remove());answered=false;current=getQ();$("question").textContent=current[0];let count=+room.settings.answerCount||((room.settings.category==="classic")?4:6);count=Math.max(3,Math.min(8,count));let arr=[current[1],...current[2].slice(0,count-1)].sort(()=>Math.random()-.5);arr.forEach((txt,i)=>spawn(txt,txt===current[1],i,arr.length));let left=+room.settings.questionSeconds||15;$("qTime").textContent="本題 "+left+"秒";qTimer=setInterval(()=>{left--;$("qTime").textContent="本題 "+left+"秒";if(left<=0){clearInterval(qTimer);if(!answered){answered=true;s.emit("answer:result",{code,token,type:"timeout"},()=>setTimeout(nextQ,500))}},1000)}
+function spawn(txt,correct,i,n){let d=document.createElement("button");d.className="drop"+(txt.length>6?" long":"");d.textContent=txt;d.style.left="0";$("game").appendChild(d);let gw=$("game").clientWidth,w=d.offsetWidth,safe=8,max=Math.max(safe,gw-w-safe);let lane=(i+.5)/n;let x=Math.max(safe,Math.min(max,lane*gw-w/2+(Math.random()-.5)*28));d.style.left=x+"px";let y=125,speed=room.settings.fallSpeed==="fast"?.9:room.settings.fallSpeed==="slow"?.35:.6;function fall(){if(!d.isConnected)return;y+=speed;d.style.top=y+"px";if(y<$("game").clientHeight-d.offsetHeight-8)fallRAF=requestAnimationFrame(fall);else d.remove()}fall();d.onclick=()=>{if(answered)return;if(correct){answered=true;clearInterval(qTimer);s.emit("answer:result",{code,token,type:"correct"},x=>{if(x.ok){me=x.player;renderMe();setTimeout(nextQ,300)}})}else{s.emit("answer:result",{code,token,type:"wrong"},x=>{if(x.ok){me=x.player;renderMe();d.textContent="💥";setTimeout(()=>d.remove(),200);if(room.settings.wrongAction==="next"){answered=true;clearInterval(qTimer);setTimeout(nextQ,300)}}})}}}
+function showResult(rank){clearInterval(qTimer);cancelAnimationFrame(fallRAF);$("play").classList.add("hidden");$("result").classList.remove("hidden");let i=rank.findIndex(x=>x.name===me.name),p=rank[i];$("myResult").innerHTML=`<h3>第 ${i+1} 名｜${p.name}</h3><p>✅ 答對 ${p.correct}題　❌ 答錯 ${p.wrong}題　⏰ 未作答 ${p.timeout}題</p><h2>⭐ ${p.score}分</h2>`;$("fullRank").onclick=()=>alert(rank.map((p,i)=>`第${i+1}名｜${p.name}｜${p.score}分`).join("\n"))}
+$("showRank").onclick=()=>room&&alert(room.ranking.map((p,i)=>`第${i+1}名｜${p.name}｜${p.score}分`).join("\n"));
 </script></body></html>
