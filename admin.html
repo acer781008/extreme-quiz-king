@@ -23,7 +23,7 @@ button,input,select,textarea{font:inherit}
 <div id="modal" class="modal hidden"><div class="modalbox"><div id="modalBody"></div><button id="modalClose" class="btn" style="width:100%">關閉</button></div></div>
 <header class="top"><h1>⚡ 極速答題王－主控台</h1><a class="btn alt" style="text-decoration:none" href="https://game-lobby-eo8o.onrender.com/">🏠 返回遊戲大廳</a></header>
 <main class="wrap">
-<section class="card"><div class="roombar"><button id="new" class="btn">＋ 新增房間</button><span id="room" class="pill">尚未建立房間</span><button id="copyLink" class="btn alt">🔗 複製玩家連結</button><button id="copyText" class="btn alt">📋 複製分享文字</button><span class="adminStatus"><span id="adminCountdown" class="statusClock hidden">⏱️ 開賽倒數 --</span><span id="adminGameTime" class="statusClock hidden">⏱️ 剩餘時間 --:--</span></span></div><div class="roombar roomActions"><button id="start" class="btn green">▶ 開始遊戲</button><button id="end" class="btn orange">■ 結束遊戲</button><button id="del" class="btn red">🗑 刪除房間</button></div></section>
+<section class="card"><div class="roombar"><button id="new" class="btn">＋ 新增房間</button><span id="room" class="pill">尚未建立房間</span><span id="topPlayers" class="pill">👥 目前玩家：0 位</span><button id="copyLink" class="btn alt">🔗 複製玩家連結</button><button id="copyText" class="btn alt">📋 複製分享文字</button></div><div class="roombar roomActions"><button id="start" class="btn green">▶ 開始遊戲</button><button id="end" class="btn orange">■ 結束遊戲</button><button id="del" class="btn red">🗑 刪除房間</button><span class="adminStatus"><span id="adminCountdown" class="statusClock hidden">⏱️ 開賽倒數 --</span><span id="adminGameTime" class="statusClock hidden">⏱️ 剩餘時間 --:--</span></span></div></section>
 
 <section class="card"><h2 class="sectionTitle">⚙️ 遊戲設定</h2><div class="settings">
 <div class="groupTitle">📚 題目</div>
@@ -31,8 +31,10 @@ button,input,select,textarea{font:inherit}
 <div class="field"><label>小分類</label><select id="subcategory"></select></div>
 <div class="field"><label>難度</label><select id="difficulty"><option value="easy">簡單</option><option value="normal" selected>普通</option><option value="hard">困難</option><option value="random">隨機</option></select></div>
 <div class="field"><label>每題倒數</label><select id="questionSeconds"></select></div>
-<div class="field"><label>答案數量</label><select id="answerCount"><option>5</option><option selected>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></div>
-<div class="field"><label>答案形狀</label><select id="shape"><option value="star">⭐ 星星</option><option value="circle">● 圓形</option><option value="square">■ 方形</option><option value="diamond">◆ 菱形</option><option value="heart">♥ 愛心</option><option value="hex">⬡ 六邊形</option><option value="balloon">🎈 氣球</option><option value="cloud">☁ 雲朵</option><option value="mixed">🎲 綜合圖</option></select></div>
+<div class="field"><label>答題模式</label><select id="playMode"><option value="falling">🌠 飄落模式</option><option value="fixed">🔲 固定模式</option></select></div>
+<div class="field" id="fixedCountBox"><label>固定答案數</label><select id="fixedAnswerCount"><option value="4">4 個</option><option value="6">6 個</option></select></div>
+<div class="field" id="fallAnswerBox"><label>答案數量</label><select id="answerCount"><option>5</option><option selected>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></div></div>
+<div class="field" id="shapeBox"><label>答案形狀</label><select id="shape"><option value="star">⭐ 星星</option><option value="circle">● 圓形</option><option value="square">■ 方形</option><option value="diamond">◆ 菱形</option><option value="heart">♥ 愛心</option><option value="hex">⬡ 六邊形</option><option value="balloon">🎈 氣球</option><option value="cloud">☁ 雲朵</option><option value="mixed">🎲 綜合圖</option></select></div>
 <div class="field"><label>掉落／飄動速度</label><select id="fallSpeed"><option value="slow">慢</option><option value="medium" selected>中</option><option value="fast">快</option></select></div>
 <div class="field"><label>遊戲背景</label><select id="bg"><option value="sky">🌤️ 藍天草地</option><option value="stars">🌌 星空夜晚</option><option value="forest">🌲 森林綠野</option><option value="ocean">🐠 海底世界</option><option value="candy">🍭 糖果樂園</option><option value="space">🚀 太空冒險</option></select></div>
 
@@ -63,8 +65,8 @@ function modal(html){$("modalBody").innerHTML=html;$("modal").classList.remove("
 function fillSubs(){const a=subs[$("category").value]||subs.random;$("subcategory").innerHTML=a.map(x=>`<option value="${x[0]}">${x[1]}</option>`).join("")}$("category").onchange=fillSubs;fillSubs();
 for(let i=3;i<=30;i++)$("questionSeconds").insertAdjacentHTML("beforeend",`<option ${i===15?"selected":""}>${i}</option>`);
 function finishFields(){const m=$("finishMode").value;$("durationBox").classList.toggle("hidden",m!=="time");$("targetBox").classList.toggle("hidden",m==="time")}$("finishMode").onchange=finishFields;finishFields();
-function vals(){const o={};["category","subcategory","difficulty","questionSeconds","answerCount","shape","fallSpeed","bg","correctPoints","wrongPoints","timeoutPoints","wrongAction","startCountdown","autoStartPlayers","finishMode","duration","targetCorrect","startAt","note"].forEach(k=>o[k]=$(k).value);return o}
-function render(r){roomData=r;$("count").textContent=r.count+"人";$("rank").innerHTML=r.ranking.map((p,i)=>`<tr><td>${i+1}</td><td>${p.name}</td><td>${p.correct}</td><td>${p.wrong}</td><td>${p.timeout}</td><td><b>${p.score}</b></td></tr>`).join("")}
+function vals(){const o={};["category","subcategory","difficulty","playMode","fixedAnswerCount","questionSeconds","answerCount","shape","fallSpeed","bg","correctPoints","wrongPoints","timeoutPoints","wrongAction","startCountdown","autoStartPlayers","finishMode","duration","targetCorrect","startAt","note"].forEach(k=>o[k]=$(k).value);return o}
+function render(r){roomData=r;$("count").textContent=r.count+"人";$("topPlayers").textContent=`👥 目前玩家：${r.count} 位`;$("rank").innerHTML=r.ranking.map((p,i)=>`<tr><td>${i+1}</td><td>${p.name}</td><td>${p.correct}</td><td>${p.wrong}</td><td>${p.timeout}</td><td><b>${p.score}</b></td></tr>`).join("")}
 async function login(){const r=await fetch("/api/admin-login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({password:$("pw").value})}),j=await r.json();if(!j.ok){$("loginErr").textContent=j.message;return}adminToken=j.token;sessionStorage.setItem("eq_admin_token",adminToken);$("login").classList.add("hidden");toast("✅ 已登入主控台")}
 $("loginBtn").onclick=login;$("pw").onkeydown=e=>{if(e.key==="Enter")login()};if(adminToken)$("login").classList.add("hidden");
 $("new").onclick=()=>s.emit("admin:create",{adminToken},x=>{if(!x.ok)return toast("❌ "+x.msg);code=x.code;$("room").textContent="房號："+code;render(x.room);toast("✅ 房間已建立")});
@@ -73,10 +75,30 @@ $("start").onclick=()=>{if(!code)return toast("⚠️ 請先新增房間");s.emi
 $("end").onclick=()=>{if(!code)return toast("⚠️ 請先新增房間");s.emit("admin:end",{code,adminToken},x=>toast(x.ok?"⏹️ 遊戲已結束":"❌ "+x.msg))};
 $("del").onclick=()=>{if(code&&confirm("確定刪除房間？玩家及排行榜資料都會刪除。"))s.emit("admin:delete",{code,adminToken},x=>{if(x.ok){toast("🗑️ 房間已刪除");setTimeout(()=>location.reload(),450)}})};
 $("copyLink").onclick=async()=>{if(!code)return toast("⚠️ 請先新增房間");await navigator.clipboard.writeText(location.origin+"/?room="+code);toast("✅ 玩家連結已複製")};
-$("copyText").onclick=async()=>{if(!code)return toast("⚠️ 請先新增房間");let v=vals();await navigator.clipboard.writeText(`⚡ 極速答題王\n房號：${code}\n題庫：${$("category").selectedOptions[0].textContent}／${$("subcategory").selectedOptions[0].textContent}\n難度：${$("difficulty").selectedOptions[0].textContent}\n開賽倒數：${v.startCountdown}秒\n${v.startAt?"預定開賽："+v.startAt+"\\n":""}${v.note?"備註："+v.note+"\\n":""}玩家連結：${location.origin}/?room=${code}`);toast("✅ 分享文字已複製")};
-$("copyRank").onclick=async()=>{if(!roomData)return toast("⚠️ 尚無排行榜");await navigator.clipboard.writeText(roomData.ranking.map((p,i)=>`第${i+1}名｜${p.name}｜答對${p.correct}｜答錯${p.wrong}｜未作答${p.timeout}｜${p.score}分`).join("\\n"));toast("✅ 排行榜已複製")};
+$("copyText").onclick=async()=>{if(!code)return toast("⚠️ 請先新增房間");let v=vals(),lines=[
+`玩家連結：${location.origin}/?room=${code}`,
+"⚡ 極速答題王",
+`房號：${code}`,
+`題庫：${$("category").selectedOptions[0].textContent}／${$("subcategory").selectedOptions[0].textContent}`,
+`難度：${$("difficulty").selectedOptions[0].textContent}`,
+`答題模式：${v.playMode==="fixed"?"固定模式（"+v.fixedAnswerCount+"個答案）":"飄落模式"}`,
+`每題倒數：${v.questionSeconds}秒`,
+`開賽倒數：${v.startCountdown}秒`,
+"分數制"
+];if(+v.autoStartPlayers>0)lines.push(`滿 ${v.autoStartPlayers} 人自動開賽`);if(v.finishMode==="time")lines.push(`遊戲時間：${v.duration}分鐘`);else lines.push(`完成條件：${v.finishMode==="target"?"答對"+v.targetCorrect+"題":"第一位答對"+v.targetCorrect+"題"}`);if(v.startAt)lines.push(`預定開賽：${v.startAt}`);if(v.note)lines.push(`備註：${v.note}`);await navigator.clipboard.writeText(lines.join("\n"));toast("✅ 分享文字已複製")};
+$("copyRank").onclick=async()=>{if(!roomData)return toast("⚠️ 尚無排行榜");await navigator.clipboard.writeText(roomData.ranking.map((p,i)=>`排名${i+1}　答對${p.correct}　答錯${p.wrong}　未作答${p.timeout}　玩家：${p.name}`).join("\n"));toast("✅ 排行榜已複製")};
 $("rules").onclick=()=>{let v=vals(),finish=v.finishMode==="time"?`遊戲 ${v.duration} 分鐘，時間到結束。`:v.finishMode==="target"?`答對 ${v.targetCorrect} 題即完成。`:`第一位答對 ${v.targetCorrect} 題時結束。`;modal(`<h2>📖 遊戲規則／分數</h2><p>題庫：<b>${$("category").selectedOptions[0].textContent}／${$("subcategory").selectedOptions[0].textContent}</b></p><p>開賽前所有玩家同步倒數 <b>${v.startCountdown} 秒</b>；正式開始後，每題限時 <b>${v.questionSeconds} 秒</b>。</p><p>直接點擊畫面中飄動的正確答案。答錯後：<b>${v.wrongAction==="continue"?"錯誤答案爆掉並補新答案，繼續本題":"立即換下一題"}</b>。</p><p>${finish}</p><hr><p>✅ 答對：<b>${Number(v.correctPoints)>=0?"+":""}${v.correctPoints} 分</b><br>💥 答錯：<b>${v.wrongPoints} 分</b><br>⏰ 未作答：<b>${v.timeoutPoints} 分</b></p>`)};
 s.on("room:update",render);s.on("room:deleted",()=>{code="";$("room").textContent="尚未建立房間"});
+
+
+function modeFields(){
+ const fixed=$("playMode").value==="fixed";
+ $("fixedCountBox").classList.toggle("hidden",!fixed);
+ $("fallAnswerBox").classList.toggle("hidden",fixed);
+ $("shapeBox").classList.toggle("hidden",fixed);
+ $("speedBox").classList.toggle("hidden",fixed);
+}
+$("playMode").onchange=modeFields;modeFields();
 
 let adminTimer=setInterval(()=>{
   if(!roomData)return;

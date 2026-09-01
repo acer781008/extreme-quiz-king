@@ -14,7 +14,7 @@ app.post("/api/admin-login",(req,res)=>{
 const makeRoom=()=>({
   status:"waiting",players:{},startedAt:null,endsAt:null,countdownEndsAt:null,
   settings:{
-    category:"math",subcategory:"mixed",difficulty:"normal",fallSpeed:"medium",
+    category:"math",subcategory:"mixed",difficulty:"normal",playMode:"falling",fixedAnswerCount:4,fallSpeed:"medium",
     questionSeconds:15,answerCount:6,wrongAction:"continue",
     correctPoints:10,wrongPoints:-5,timeoutPoints:-5,
     finishMode:"time",duration:10,targetCorrect:20,
@@ -114,4 +114,4 @@ io.on("connection",socket=>{
   });
 });
 app.get("/admin",(req,res)=>res.sendFile(path.join(__dirname,"admin.html")));
-server.listen(process.env.PORT||3000,()=>console.log("極速答題王 V1.4 running"));
+server.listen(process.env.PORT||3000,()=>console.log("極速答題王 V1.6 running"));

@@ -29,10 +29,10 @@ button,input,select,textarea{font:inherit}
 .game[data-bg="space"]{background:radial-gradient(circle at 20% 25%,#b6a0ff55 0 65px,transparent 66px),radial-gradient(circle at 80% 70%,#7ae0ff33 0 90px,transparent 91px),linear-gradient(#101534,#38275d)}.game[data-bg="space"]:after{content:"🪐       ✨      🚀";position:absolute;left:4%;right:4%;bottom:7%;font-size:58px;opacity:.22}
 .question{position:relative;z-index:20;margin:10px;background:#fffffff2;color:#27314c;border-radius:15px;padding:12px;text-align:center;font-size:clamp(22px,4.5vw,34px);font-weight:950;box-shadow:0 4px 14px #0001}
 .hud{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:8px 0}.timerbox{position:relative;z-index:25;margin:0 10px 4px;height:13px;background:#ffffffa8;border-radius:999px;overflow:hidden;border:1px solid #ffffffb8}.timerbar{height:100%;width:100%;background:linear-gradient(90deg,#35c17a,#f5c04d);transition:width .2s linear}.timerbar.danger{background:linear-gradient(90deg,#f55,#ff9d5c)}
-.drop{position:absolute;z-index:15;min-width:94px;max-width:175px;min-height:76px;border:3px solid #fff;box-shadow:0 6px 16px #0002;font-weight:950;font-size:clamp(16px,3.5vw,21px);color:#27314c;cursor:pointer;padding:10px;overflow-wrap:anywhere;background:#ffd85f}
-.drop.long{max-width:145px;min-height:78px;border-radius:18px}
+.drop{position:absolute;z-index:15;width:116px;height:96px;min-width:116px;max-width:116px;min-height:96px;border:3px solid #fff;box-shadow:0 6px 16px #0002;font-weight:950;font-size:clamp(16px,3.5vw,21px);color:#27314c;cursor:pointer;padding:10px;overflow-wrap:anywhere;background:#ffd85f}
+.drop.long{width:150px;height:100px;min-width:150px;max-width:150px;min-height:100px;border-radius:18px}
 .drop[data-shape="star"]{clip-path:polygon(50% 0%,61% 34%,98% 35%,68% 56%,79% 92%,50% 71%,21% 92%,32% 56%,2% 35%,39% 34%);padding:24px 20px;min-height:112px;min-width:112px}
-.drop[data-shape="circle"]{border-radius:50%;aspect-ratio:1/1;min-width:78px}
+.drop[data-shape="circle"]{border-radius:50%}
 .drop[data-shape="square"]{border-radius:9px}
 .drop[data-shape="diamond"]{clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);padding:20px}
 .drop[data-shape="heart"]{clip-path:polygon(50% 92%,8% 50%,5% 27%,18% 10%,38% 10%,50% 25%,62% 10%,82% 10%,95% 27%,92% 50%);background:#ffb8cf;padding:20px 13px}
@@ -41,8 +41,8 @@ button,input,select,textarea{font:inherit}
 .drop[data-shape="cloud"]{border-radius:999px;background:#fff;box-shadow:18px -10px 0 -5px #fff,-18px -7px 0 -7px #fff,0 6px 16px #0002}
 .feedback{position:absolute;z-index:100;left:50%;top:47%;transform:translate(-50%,-50%) scale(.8);font-size:clamp(34px,8vw,68px);font-weight:1000;text-shadow:0 3px 8px #fff,0 4px 16px #0002;opacity:0;pointer-events:none}.feedback.show{animation:pop .65s ease}.feedback.good{color:#138b50}.feedback.bad{color:#d54355}.feedback.time{color:#e48b26}@keyframes pop{0%{opacity:0;transform:translate(-50%,-50%) scale(.6)}25%{opacity:1;transform:translate(-50%,-50%) scale(1.18)}75%{opacity:1}100%{opacity:0;transform:translate(-50%,-58%) scale(1)}}
 .overlay{position:absolute;inset:0;z-index:200;background:linear-gradient(145deg,#3f35a9e8,#6a50d9e8);color:white;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}.bigcount{font-size:clamp(72px,18vw,150px);font-weight:1000;line-height:1}.countlabel{font-size:20px;font-weight:850;margin-bottom:12px}
-@media(max-width:600px){.drop[data-shape="star"]{min-width:108px;min-height:108px}.waitgrid{grid-template-columns:1fr 1fr}.game{min-height:540px}.drop{max-width:120px;font-size:16px}.joinbox{margin:18px auto}}
-body:before{content:"⚡  ⭐  ❓  🎮  🏆  ABC  123";position:fixed;inset:0;pointer-events:none;z-index:-1;font-size:55px;line-height:3;letter-spacing:25px;opacity:.08;transform:rotate(-7deg)}</style></head><body>
+@media(max-width:600px){.drop{width:104px;height:88px;min-width:104px;max-width:104px;min-height:88px}.drop.long{width:130px;min-width:130px;max-width:130px}.drop[data-shape="star"]{min-width:104px;min-height:96px}.waitgrid{grid-template-columns:1fr 1fr}.game{min-height:540px}.drop{max-width:120px;font-size:16px}.joinbox{margin:18px auto}}
+body:before{content:"⚡  ⭐  ❓  🎮  🏆  ABC  123";position:fixed;inset:0;pointer-events:none;z-index:-1;font-size:55px;line-height:3;letter-spacing:25px;opacity:.08;transform:rotate(-7deg)}.fixedAnswers{position:absolute;left:12px;right:12px;top:150px;bottom:20px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-content:center;padding:10px}.fixedAnswer{min-height:92px;border:3px solid #fff;border-radius:22px;box-shadow:0 8px 18px #0002;font-size:clamp(18px,4vw,25px);font-weight:950;color:#27314c;padding:14px;cursor:pointer;overflow-wrap:anywhere}.fixedAnswer:active{transform:scale(.97)}@media(max-width:600px){.fixedAnswers{gap:10px;top:140px}.fixedAnswer{min-height:78px}}</style></head><body>
 <div id="modal" class="modal hidden"><div class="modalbox"><div id="modalBody"></div><button id="modalClose" class="btn" style="width:100%">關閉</button></div></div>
 <header class="top"><h1>⚡ 極速答題王</h1></header><main class="wrap player">
 <section id="join" class="card joinbox"><h2>🎮 加入遊戲</h2><p id="roomLabel" class="pill"></p><p class="muted">輸入玩家名稱，進入等待室。</p><input id="name" maxlength="20" placeholder="玩家名稱"><button id="joinBtn" class="btn" style="width:100%;margin-top:10px">加入遊戲</button><p id="joinMsg" style="font-weight:800"></p></section>
@@ -107,11 +107,59 @@ fun:[
 ["哪一個通常會飛？","飛機",["冰箱","沙發","浴缸","桌子","枕頭","書櫃","衣櫥","馬桶","鍋子"]]
 ]
 };
+// V1.6 擴充題庫：以獨立事實/詞彙組合建立大量不重複題目。
+// 每個大類至少補到 50 題以上；數學另採動態產生，組合量更大。
+const extraFacts={
+chinese:[
+["「高興」的近義詞？","開心"],["「美麗」的近義詞？","漂亮"],["「寒冷」的反義詞？","炎熱"],["「黑暗」的反義詞？","明亮"],["「安靜」的反義詞？","吵鬧"],["「開始」的反義詞？","結束"],["「前進」的反義詞？","後退"],["「成功」的反義詞？","失敗"],["「勇敢」的反義詞？","膽怯"],["「整齊」的反義詞？","凌亂"],
+["一＿魚，適合的量詞？","條"],["一＿書，適合的量詞？","本"],["一＿花，適合的量詞？","朵"],["一＿鳥，適合的量詞？","隻"],["一＿車，適合的量詞？","輛"],["一＿橋，適合的量詞？","座"],["一＿衣服，適合的量詞？","件"],["一＿鉛筆，適合的量詞？","枝"],["一＿鞋，適合的量詞？","雙"],["一＿信，適合的量詞？","封"],
+["「一心一意」較接近？","專心"],["「井井有條」較接近？","整齊有序"],["「大吃一驚」較接近？","非常驚訝"],["「迫不及待」較接近？","非常急切"],["「一目了然」較接近？","一看就明白"],["「半途而廢」較接近？","中途放棄"],["「守株待兔」提醒我們不要？","只等運氣"],["「亡羊補牢」較接近？","出錯後及時補救"],["「雪中送炭」較接近？","急難時給予幫助"],["「自相矛盾」較接近？","說法互相衝突"],
+["「明」由哪兩個字組成？","日、月"],["「休」由哪兩個部分組成？","人、木"],["「林」有幾個木？","兩個"],["「森」有幾個木？","三個"],["「品」有幾個口？","三個"],["「晶」有幾個日？","三個"],["「眾」的讀音較接近？","ㄓㄨㄥˋ"],["「山」的部首是？","山"],["「河」的部首是？","水部"],["「媽」的部首是？","女部"],
+["哪個詞表示速度很快？","迅速"],["哪個詞表示非常小心？","謹慎"],["哪個詞表示心情不好？","難過"],["哪個詞表示沒有聲音？","安靜"],["哪個詞表示東西很多？","眾多"],["哪個詞表示地方很寬？","寬廣"]
+],
+classic:[
+["「鋤禾日當午」下一句？","汗滴禾下土"],["「汗滴禾下土」下一句？","誰知盤中飧"],["「夜來風雨聲」下一句？","花落知多少"],["「黃河入海流」下一句？","欲窮千里目"],["「慈母手中線」下一句？","遊子身上衣"],["「誰言寸草心」下一句？","報得三春暉"],["「兩個黃鸝鳴翠柳」下一句？","一行白鷺上青天"],["「孤舟蓑笠翁」下一句？","獨釣寒江雪"],
+["「松下問童子」下一句？","言師採藥去"],["「只在此山中」下一句？","雲深不知處"],["「小時不識月」下一句？","呼作白玉盤"],["「危樓高百尺」下一句？","手可摘星辰"],["「不敢高聲語」下一句？","恐驚天上人"],["「解落三秋葉」下一句？","能開二月花"],["「過江千尺浪」下一句？","入竹萬竿斜"],["「千山鳥飛絕」下一句？","萬徑人蹤滅"],
+["「返景入深林」下一句？","復照青苔上"],["「空山不見人」下一句？","但聞人語響"],["「紅豆生南國」下一句？","春來發幾枝"],["「願君多採擷」下一句？","此物最相思"],["「白毛浮綠水」下一句？","紅掌撥清波"],["「江南可採蓮」下一句？","蓮葉何田田"],["「魚戲蓮葉東」下一句？","魚戲蓮葉西"],["「少小離家老大回」下一句？","鄉音無改鬢毛衰"],
+["「人之初，性本善」後一句？","性相近，習相遠"],["「苟不教」下一句？","性乃遷"],["「教之道」下一句？","貴以專"],["「昔孟母」下一句？","擇鄰處"],["「子不學」下一句？","斷機杼"],["「竇燕山」下一句？","有義方"],["「教五子」下一句？","名俱揚"],["「養不教」下一句？","父之過"],
+["「教不嚴」下一句？","師之惰"],["「子不學」後一句？","非所宜"],["「幼不學」下一句？","老何為"],["「玉不琢」下一句？","不成器"],["「人不學」下一句？","不知義"],["「為人子」下一句？","方少時"],["「親師友」下一句？","習禮儀"],["「香九齡」下一句？","能溫席"],
+["「融四歲」下一句？","能讓梨"],["「首孝弟」下一句？","次見聞"],["「知某數」下一句？","識某文"],["「一而十」下一句？","十而百"],["「百而千」下一句？","千而萬"],["「三才者」下一句？","天地人"]
+],
+life:[
+["早上起床後整理什麼有助整潔？","床鋪"],["用餐前通常應該？","洗手"],["口渴時最基本可補充？","白開水"],["過馬路應走？","行人穿越道"],["搭機車應戴？","安全帽"],["搭車時應繫？","安全帶"],["看到地面濕滑應？","小心慢走"],["使用剪刀時應？","小心操作"],["插座附近應避免？","碰水"],["聞到瓦斯味應先？","告知大人並遠離火源"],
+["水果食用前通常應？","清洗"],["生熟食材最好？","分開處理"],["食物過期通常應？","不要食用"],["垃圾應該？","丟進垃圾桶"],["廢紙可優先？","資源回收"],["離開房間可隨手？","關燈"],["刷牙可適量關閉？","水龍頭"],["購物可自備？","購物袋"],["舊電池應？","依規定回收"],["看到垃圾不亂丟是？","維護環境"],
+["冬天天冷常穿？","外套"],["下雨出門可穿？","雨衣"],["太陽很大可使用？","帽子"],["運動後流汗可用？","毛巾"],["寫字常用？","筆"],["剪紙常用？","剪刀"],["量長度常用？","尺"],["掃地常用？","掃把"],["拖地常用？","拖把"],["盛湯常用？","碗"],
+["醫師主要工作之一？","看診"],["老師主要工作之一？","教學"],["消防員主要工作之一？","救災"],["郵差主要工作之一？","投遞郵件"],["廚師主要工作之一？","烹調食物"],["司機主要工作之一？","駕駛車輛"],["農夫主要工作之一？","種植作物"],["警察主要工作之一？","維護治安"],["護理師主要工作之一？","照護病人"],["清潔人員主要工作之一？","維護環境整潔"],
+["端午節常見活動？","划龍舟"],["中秋節常見食物？","月餅"],["元宵節常見活動？","賞花燈"],["春節常見祝福？","新年快樂"],["母親節常表達？","感謝母親"],["教師節常表達？","感謝老師"]
+],
+knowledge:[
+["日本的首都是？","東京"],["韓國的首都是？","首爾"],["法國的首都是？","巴黎"],["英國的首都是？","倫敦"],["義大利的首都是？","羅馬"],["泰國的首都是？","曼谷"],["澳洲的首都是？","坎培拉"],["加拿大的首都是？","渥太華"],["美國的首都是？","華盛頓特區"],["中國的首都是？","北京"],
+["地球的天然衛星是？","月球"],["離太陽最近的行星？","水星"],["有明顯光環的行星？","土星"],["我們居住的行星？","地球"],["紅色行星常指？","火星"],["太陽屬於？","恆星"],["地球自轉約需？","24小時"],["地球公轉約需？","一年"],["白天主要光源？","太陽"],["夜空中月亮本身會發光嗎？","不會"],
+["水沸騰會變成？","水蒸氣"],["冰融化會變成？","水"],["植物根部主要吸收？","水分"],["葉片常呈綠色與哪種色素有關？","葉綠素"],["人呼吸需要？","氧氣"],["魚主要用什麼呼吸？","鰓"],["鳥類身體通常有？","羽毛"],["哺乳類幼體通常喝？","乳汁"],["青蛙屬於？","兩棲類"],["蝴蝶幼蟲常稱？","毛毛蟲"],
+["台灣東邊是哪個海洋？","太平洋"],["台灣最長的河川？","濁水溪"],["台灣最大的天然湖泊？","日月潭"],["台灣本島最高峰？","玉山主峰"],["澎湖位於哪個海域？","台灣海峽"],["台灣北部的大城市？","臺北"],["高雄位於台灣哪一側較接近？","西南部"],["花蓮位於台灣哪一側？","東部"],["基隆以哪種設施聞名？","港口"],["阿里山位於哪個縣？","嘉義縣"],
+["世界最大洲？","亞洲"],["世界最小洲？","大洋洲"],["撒哈拉沙漠位於？","非洲"],["亞馬遜雨林主要位於？","南美洲"],["埃及著名古蹟？","金字塔"],["富士山位於？","日本"]
+],
+fun:[
+["哪個不是文具？","西瓜"],["哪個不是交通工具？","枕頭"],["哪個不是動物？","鉛筆"],["哪個不是蔬菜？","公車"],["哪個不是家具？","香蕉"],["哪個不是飲料？","鞋子"],["哪個不是衣物？","湯匙"],["哪個不是電器？","蘿蔔"],["哪個不是水果？","馬鈴薯"],["哪個不是顏色？","火車"],
+["🐱代表？","貓"],["🐰代表？","兔子"],["🐼代表？","熊貓"],["🐯代表？","老虎"],["🐸代表？","青蛙"],["🐵代表？","猴子"],["🐮代表？","牛"],["🐷代表？","豬"],["🦁代表？","獅子"],["🐧代表？","企鵝"],
+["🍎代表？","蘋果"],["🍌代表？","香蕉"],["🍉代表？","西瓜"],["🍇代表？","葡萄"],["🍓代表？","草莓"],["🥕代表？","胡蘿蔔"],["🚲代表？","腳踏車"],["✈️代表？","飛機"],["🚂代表？","火車"],["🚢代表？","船"],
+["什麼東西有腳卻不會走？","桌子"],["什麼東西有針卻不會縫衣服？","時鐘"],["什麼東西有眼卻看不見？","針"],["什麼東西有頁卻不是樹葉？","書"],["什麼東西有鍵卻不是門鎖？","鍵盤"],["什麼東西會響卻沒有嘴？","鈴鐺"],["什麼東西能照出你卻不是相機？","鏡子"],["什麼東西越吹越大？","氣球"],["什麼東西下雨時會張開？","雨傘"],["什麼東西白天常看不見、夜晚常看見？","星星"],
+["🌞最接近哪種天氣？","晴天"],["☁️最接近？","多雲"],["❄️最接近？","下雪"],["🌈通常稱作？","彩虹"],["🔥代表？","火"],["💧代表？","水滴"]
+]};
+const fallbackWrong=["蘋果","桌子","天空","鉛筆","公車","月亮","雨傘","白色","公園","書本","水杯","鞋子"];
+for(const k of Object.keys(extraFacts)){
+ const answers=extraFacts[k].map(x=>x[1]);
+ extraFacts[k].forEach(([q,a],idx)=>{
+   const pool=[...new Set([...answers.filter(x=>x!==a),...fallbackWrong])];
+   banks[k].push([q,a,shuffle(pool).slice(0,9)]);
+ });
+}
 function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function mathQ(){let tries=0,q;do{let a=Math.ceil(Math.random()*20),b=Math.ceil(Math.random()*15),op=["+","-","×"][Math.floor(Math.random()*3)],ans;if(op==="+")ans=a+b;else if(op==="-"){if(b>a)[a,b]=[b,a];ans=a-b}else{a=Math.ceil(Math.random()*9);b=Math.ceil(Math.random()*9);ans=a*b}let w=new Set;while(w.size<9){let x=ans+Math.floor(Math.random()*21)-10;if(x>=0&&x!==ans)w.add(String(x))}q=[`${a} ${op} ${b} = ?`,String(ans),[...w]];tries++}while(lastMath.includes(q[0])&&tries<30);lastMath.push(q[0]);if(lastMath.length>12)lastMath.shift();return q}
 function refillDeck(){let c=room.settings.category;if(c==="random"){deck=[];["chinese","classic","life","knowledge","fun"].forEach(k=>deck.push(...banks[k].map(q=>[k,q])));deck=shuffle(deck)}else if(c!=="math")deck=shuffle((banks[c]||banks.fun).map(q=>[c,q]));}
-function getQ(){let c=room.settings.category;if(c==="math")return mathQ();if(!deck.length)refillDeck();return deck.pop()[1]}
-function modalInfo(){if(!room)return;let v=room.settings,finish=v.finishMode==="time"?`遊戲 ${v.duration} 分鐘，時間到結束。`:v.finishMode==="target"?`答對 ${v.targetCorrect} 題即完成。`:`第一位答對 ${v.targetCorrect} 題時結束。`;document.getElementById("modalBody").innerHTML=`<h2>📖 遊戲規則／分數</h2><p>題庫：<b>${catName[v.category]||"題庫"}</b>　難度：<b>${diffName[v.difficulty]||"普通"}</b></p><p>開賽前全房同步倒數 <b>${v.startCountdown} 秒</b>。正式開始後，每題限時 <b>${v.questionSeconds} 秒</b>，直接點擊飄動的正確答案。</p><p>答錯後：<b>${v.wrongAction==="continue"?"錯誤答案爆掉並補新答案，繼續本題":"立即換下一題"}</b></p><p>${finish}</p><hr><p>✅ 答對：<b>${+v.correctPoints>=0?"+":""}${v.correctPoints} 分</b><br>💥 答錯：<b>${v.wrongPoints} 分</b><br>⏰ 未作答：<b>${v.timeoutPoints} 分</b></p>`;$("modal").classList.remove("hidden")}
+let exhausted=false;
+function getQ(){let c=room.settings.category;if(c==="math")return mathQ();if(!deck.length){if(exhausted)return null;refillDeck();exhausted=true}return deck.length?deck.pop()[1]:null}
+function modalInfo(){if(!room)return;let v=room.settings,finish=v.finishMode==="time"?`遊戲 ${v.duration} 分鐘，時間到結束。`:v.finishMode==="target"?`答對 ${v.targetCorrect} 題即完成。`:`第一位答對 ${v.targetCorrect} 題時結束。`;document.getElementById("modalBody").innerHTML=`<h2>📖 遊戲規則／分數</h2><p>題庫：<b>${catName[v.category]||"題庫"}</b>　難度：<b>${diffName[v.difficulty]||"普通"}</b></p><p>開賽前全房同步倒數 <b>${v.startCountdown} 秒</b>。正式開始後，每題限時 <b>${v.questionSeconds} 秒</b>，${v.playMode==="fixed"?"從下方固定答案中選擇正確答案。":"直接點擊飄動的正確答案。"}</p><p>答錯後：<b>${v.wrongAction==="continue"?"錯誤答案爆掉並補新答案，繼續本題":"立即換下一題"}</b></p><p>${finish}</p><hr><p>✅ 答對：<b>${+v.correctPoints>=0?"+":""}${v.correctPoints} 分</b><br>💥 答錯：<b>${v.wrongPoints} 分</b><br>⏰ 未作答：<b>${v.timeoutPoints} 分</b></p>`;$("modal").classList.remove("hidden")}
 $("modalClose").onclick=()=>$("modal").classList.add("hidden");$("waitInfo").onclick=modalInfo;$("playInfo").onclick=modalInfo;
 function join(){let name=$("name").value.trim();if(!token&&!name){$("joinMsg").textContent="⚠️ 請輸入玩家名稱";return}$("joinMsg").textContent="正在加入…";s.emit("player:join",{code,name,token},x=>{if(!x?.ok){$("joinMsg").textContent="❌ "+(x?.msg||"加入失敗");return}token=x.token;localStorage.setItem("eq_"+code,token);me=x.player;room=x.room;$("join").classList.add("hidden");if(room.status==="countdown")showCountdown(room.countdownEndsAt);else if(room.status==="playing")startUI();else waitUI()})}
 $("joinBtn").onclick=join;$("name").onkeydown=e=>{if(e.key==="Enter")join()};if(token)join();
@@ -122,20 +170,63 @@ s.on("game:countdown",x=>showCountdown(x.endsAt));
 function showCountdown(endsAt){clearInterval(countInt);$("join").classList.add("hidden");$("wait").classList.add("hidden");$("play").classList.remove("hidden");$("game").dataset.bg=room?.settings?.bg||"sky";$("countdown").classList.remove("hidden");function tick(){let left=Math.max(0,Math.ceil((endsAt-Date.now())/1000));$("bigcount").textContent=left>0?left:"GO！";if(left<=0){clearInterval(countInt);setTimeout(()=>$("countdown").classList.add("hidden"),700)}}tick();countInt=setInterval(tick,250)}
 s.on("game:start",r=>{room=r;$("countdown").classList.add("hidden");startUI()});
 s.on("game:ended",x=>showResult(x.ranking));s.on("room:deleted",()=>{alert("主控已刪除此房間");localStorage.removeItem("eq_"+code);location.href=location.pathname});
-function startUI(){$("join").classList.add("hidden");$("wait").classList.add("hidden");$("play").classList.remove("hidden");$("game").dataset.bg=room.settings.bg||"sky";deck=[];nextQ();renderMe()}
+function startUI(){exhausted=false;$("join").classList.add("hidden");$("wait").classList.add("hidden");$("play").classList.remove("hidden");$("game").dataset.bg=room.settings.bg||"sky";deck=[];nextQ();renderMe()}
 function renderMe(){if(!room||!me)return;let i=room.ranking.findIndex(x=>x.name===me.name);$("myRank").textContent="🏆 第"+(i+1)+"名";$("score").textContent="⭐ "+me.score+"分";$("stats").textContent=`答對${me.correct}｜答錯${me.wrong}｜未作答${me.timeout}`}
 setInterval(()=>{if(room?.status==="playing"){let sec=room.endsAt?Math.max(0,Math.ceil((room.endsAt-Date.now())/1000)):0;$("gameTime").textContent=room.endsAt?`比賽 ${Math.floor(sec/60)}:${String(sec%60).padStart(2,"0")}`:"比賽進行中"}},500);
 function showFeedback(kind,text){const f=$("feedback");f.className="feedback "+kind;f.textContent=text;void f.offsetWidth;f.classList.add("show")}
-function clearDrops(){spawnTimers.forEach(clearTimeout);spawnTimers=[];document.querySelectorAll(".drop").forEach(x=>x.remove())}
-function nextQ(){clearInterval(qInt);clearDrops();answered=false;current=getQ();$("question").textContent=current[0];let n=+room.settings.answerCount||6;if(current[1].length>8)n=Math.min(n,4);else if(current[1].length>5)n=Math.min(n,6);let wrongs=shuffle(current[2]).slice(0,n-1),arr=shuffle([current[1],...wrongs]);arr.forEach((t,i)=>spawn(t,t===current[1],n,Math.random()*1400));let total=+room.settings.questionSeconds||15,left=total;$("qTime").textContent=`本題 ${left}秒`;$("timerbar").style.width="100%";$("timerbar").classList.remove("danger");qInt=setInterval(()=>{left=Math.max(0,left-0.2);let sec=Math.ceil(left);$("qTime").textContent=`本題 ${sec}秒`;$("timerbar").style.width=(left/total*100)+"%";$("timerbar").classList.toggle("danger",left<=5);if(left<=0){clearInterval(qInt);if(!answered){answered=true;clearDrops();showFeedback("time",`⏰ ${room.settings.timeoutPoints}`);s.emit("answer:result",{code,token,type:"timeout"},x=>{if(x?.ok){me=x.player;renderMe()}setTimeout(nextQ,700)})}}},200)}
+function clearDrops(){spawnTimers.forEach(clearTimeout);spawnTimers=[];movers=[];document.querySelectorAll(".drop,.fixedAnswers").forEach(x=>x.remove())}
+function nextQ(){clearInterval(qInt);clearDrops();answered=false;current=getQ();if(!current){$("question").textContent="🎉 本場題目已全部完成";$("qTime").textContent="題庫完成";return}$("question").textContent=current[0];let fixed=room.settings.playMode==="fixed",n=fixed?(+room.settings.fixedAnswerCount||4):(+room.settings.answerCount||6);if(current[1].length>8)n=Math.min(n,4);else if(current[1].length>5)n=Math.min(n,6);let wrongs=shuffle(current[2]).slice(0,n-1),arr=shuffle([current[1],...wrongs]);if(fixed)renderFixed(arr,current[1]);else arr.forEach((t,i)=>spawn(t,t===current[1],n,Math.random()*900));let total=+room.settings.questionSeconds||15,left=total;$("qTime").textContent=`本題 ${left}秒`;$("timerbar").style.width="100%";$("timerbar").classList.remove("danger");qInt=setInterval(()=>{left=Math.max(0,left-0.2);let sec=Math.ceil(left);$("qTime").textContent=`本題 ${sec}秒`;$("timerbar").style.width=(left/total*100)+"%";$("timerbar").classList.toggle("danger",left<=5);if(left<=0){clearInterval(qInt);if(!answered){answered=true;clearDrops();showFeedback("time",`⏰ ${room.settings.timeoutPoints}`);s.emit("answer:result",{code,token,type:"timeout"},x=>{if(x?.ok){me=x.player;renderMe()}setTimeout(nextQ,700)})}}},200)}
 const shapeList=["star","circle","square","diamond","heart","hex","balloon","cloud"];
 function spawn(txt,correct,n,delay=0){let tm=setTimeout(()=>createDrop(txt,correct,n),delay);spawnTimers.push(tm)}
-function createDrop(txt,correct,n){if(answered||room?.status!=="playing")return;let d=document.createElement("button"),shape=room.settings.shape||"star";if(shape==="mixed")shape=shapeList[Math.floor(Math.random()*shapeList.length)];d.className="drop"+(txt.length>6?" long":"");d.dataset.shape=shape;d.textContent=txt;$("game").appendChild(d);
-let g=$("game"),w=d.offsetWidth,x=Math.random()*(g.clientWidth+w*.9)-w*.45,y=86-Math.random()*170;
-let base=room.settings.fallSpeed==="fast"?4.2:room.settings.fallSpeed==="slow"?1.65:2.7,vy=base*(.65+Math.random()*.8),vx=(Math.random()-.5)*(room.settings.fallSpeed==="fast"?4.3:room.settings.fallSpeed==="slow"?1.8:3.0),phase=Math.random()*6.28,amp=12+Math.random()*42,freq=.018+Math.random()*.035,frame=0,dead=false,lock=false;
-function replace(){if(dead)return;dead=true;d.remove();if(!answered&&room?.status==="playing")spawn(txt,correct,n,140+Math.random()*550)}
-function fly(){if(dead||!d.isConnected)return;frame++;y+=vy;x+=vx;d.style.top=y+"px";d.style.left=(x+Math.sin(phase+frame*freq)*amp)+"px";let r=d.getBoundingClientRect(),gr=g.getBoundingClientRect();if(r.top>gr.bottom+70||r.right<gr.left-70||r.left>gr.right+70){replace();return}requestAnimationFrame(fly)}requestAnimationFrame(fly);
-d.onclick=()=>{if(answered||lock)return;lock=true;if(correct){answered=true;clearInterval(qInt);showFeedback("good",`✅ +${room.settings.correctPoints}`);s.emit("answer:result",{code,token,type:"correct"},x=>{if(x?.ok){me=x.player;renderMe()}clearDrops();setTimeout(nextQ,650)})}else{showFeedback("bad",`💥 ${room.settings.wrongPoints}`);s.emit("answer:result",{code,token,type:"wrong"},x=>{if(x?.ok){me=x.player;renderMe();d.textContent="💥";if(room.settings.wrongAction==="next"){answered=true;clearInterval(qInt);setTimeout(()=>{clearDrops();nextQ()},650)}else setTimeout(replace,180)}})}}}
-function showResult(rank){clearInterval(qInt);clearDrops();$("play").classList.add("hidden");$("result").classList.remove("hidden");let i=rank.findIndex(x=>x.name===me.name),p=rank[i];$("myResult").innerHTML=`<h2>第 ${i+1} 名｜${p.name}</h2><p>✅ ${p.correct}題　❌ ${p.wrong}題　⏰ ${p.timeout}題</p><h2>⭐ ${p.score}分</h2>`;$("fullRank").onclick=()=>alert(rank.map((p,i)=>`第${i+1}名｜${p.name}｜${p.score}分`).join("\\n"))}
+const dropColors=["#ffd45e","#ff9fba","#8fe3ff","#9fe6a0","#cdb4ff","#ffbe7b","#87e6d0","#f7a8ff"];
+let movers=[];
+function renderFixed(arr,correctText){
+ clearDrops();let box=document.createElement("div");box.className="fixedAnswers";box.id="fixedAnswers";
+ arr.forEach((txt,i)=>{let b=document.createElement("button");b.className="fixedAnswer";b.style.background=dropColors[i%dropColors.length];b.textContent=txt;b.onclick=()=>handleAnswer(b,txt===correctText);box.appendChild(b)});
+ $("game").appendChild(box);
+}
+function createDrop(txt,correct,n){
+ if(answered||room?.status!=="playing")return;
+ let d=document.createElement("button"),shape=room.settings.shape||"star";
+ if(shape==="mixed")shape=shapeList[Math.floor(Math.random()*shapeList.length)];
+ d.className="drop"+(txt.length>8?" long":"");d.dataset.shape=shape;d.textContent=txt;
+ d.style.background=dropColors[Math.floor(Math.random()*dropColors.length)];
+ $("game").appendChild(d);
+ const g=$("game"),W=Math.max(40,g.clientWidth-d.offsetWidth),H=Math.max(80,g.clientHeight-d.offsetHeight-25);
+ let tries=0,x,y;
+ do{x=Math.random()*W;y=145+Math.random()*Math.max(30,H-145);tries++}
+ while(tries<30&&movers.some(m=>Math.abs(m.x-x)<125&&Math.abs(m.y-y)<100));
+ let sp=room.settings.fallSpeed==="fast"?1.9:room.settings.fallSpeed==="slow"?0.85:1.3;
+ let m={el:d,x,y,vx:(Math.random()-.5)*2.3*sp,vy:(.65+Math.random()*.8)*sp,w:d.offsetWidth,h:d.offsetHeight,correct};
+ movers.push(m);d.onclick=()=>handleAnswer(d,correct);
+ if(!window._physicsRAF)physics();
+}
+function handleAnswer(el,correct){
+ if(answered)return;
+ if(correct){answered=true;clearInterval(qInt);clearDrops();showFeedback("ok",`✅ +${room.settings.correctPoints}`);s.emit("answer:result",{code,token,type:"correct"},x=>{if(x?.ok){me=x.player;renderMe()}setTimeout(nextQ,650)})}
+ else{showFeedback("bad",`💥 ${room.settings.wrongPoints}`);s.emit("answer:result",{code,token,type:"wrong"},x=>{if(x?.ok){me=x.player;renderMe()}});if(room.settings.wrongAction==="next"){answered=true;clearInterval(qInt);clearDrops();setTimeout(nextQ,650)}else{if(el.classList.contains("fixedAnswer"))el.disabled=true;else{movers=movers.filter(m=>m.el!==el);el.remove()}}}
+}
+function physics(){
+ window._physicsRAF=requestAnimationFrame(physics);
+ const g=$("game");if(!g||room?.status!=="playing")return;
+ const W=g.clientWidth,H=g.clientHeight;
+ for(let i=0;i<movers.length;i++){
+   let a=movers[i];if(!a.el.isConnected)continue;
+   a.x+=a.vx;a.y+=a.vy;
+   if(a.x<=0){a.x=0;a.vx=Math.abs(a.vx)}
+   if(a.x+a.w>=W){a.x=W-a.w;a.vx=-Math.abs(a.vx)}
+   if(a.y<=135){a.y=135;a.vy=Math.abs(a.vy)}
+   if(a.y+a.h>=H){a.y=H-a.h;a.vy=-Math.abs(a.vy)}
+   for(let j=i+1;j<movers.length;j++){
+     let b=movers[j],dx=(a.x+a.w/2)-(b.x+b.w/2),dy=(a.y+a.h/2)-(b.y+b.h/2);
+     let ox=(a.w+b.w)/2-Math.abs(dx),oy=(a.h+b.h)/2-Math.abs(dy);
+     if(ox>0&&oy>0){
+       if(ox<oy){let push=ox/2+1,s=dx>=0?1:-1;a.x+=push*s;b.x-=push*s;[a.vx,b.vx]=[b.vx,a.vx];a.vx+=.25*s;b.vx-=.25*s}
+       else{let push=oy/2+1,s=dy>=0?1:-1;a.y+=push*s;b.y-=push*s;[a.vy,b.vy]=[b.vy,a.vy];a.vy+=.2*s;b.vy-=.2*s}
+     }
+   }
+   a.el.style.transform=`translate(${a.x}px,${a.y}px)`;
+ }
+}
 $("showRank").onclick=()=>room&&alert(room.ranking.map((p,i)=>`第${i+1}名｜${p.name}｜${p.score}分`).join("\\n"));
 </script></body></html>
