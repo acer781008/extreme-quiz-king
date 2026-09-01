@@ -1,87 +1,141 @@
-<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>極速答題王</title><style>*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,"Noto Sans TC",sans-serif;background:#f2f5ff;color:#27314c;position:relative}
-body:before{content:"⭐  ⚡  ❓  🎮  ✨  🏆";position:fixed;left:0;right:0;top:92px;text-align:center;font-size:34px;letter-spacing:25px;opacity:.05;pointer-events:none}button,input,select,textarea{font:inherit}.top{background:linear-gradient(120deg,#584bd8,#765ce9);color:#fff;padding:12px 18px;display:flex;justify-content:space-between;align-items:center}.top h1{margin:0;font-size:21px}.wrap{max-width:1180px;margin:auto;padding:12px}.card{background:#fff;border:1px solid #e1e5f2;border-radius:18px;padding:14px;margin-bottom:10px;box-shadow:0 5px 18px #39406a0d}.roombar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.btn{border:0;border-radius:11px;padding:9px 13px;font-weight:800;background:#6254dd;color:#fff;cursor:pointer}.btn.alt{background:#eff0ff;color:#4c45a5}.btn.green{background:#168d57}.btn.red{background:#d65362}.pill{padding:7px 11px;border-radius:999px;background:#f0f1ff;font-weight:900}.settings{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px 10px}.field label{display:block;font-size:12px;font-weight:900;margin:0 0 3px;color:#555f7b}.field input,.field select,.field textarea{width:100%;height:38px;border:1px solid #ccd4e5;border-radius:10px;padding:7px 9px;background:#fff}.field textarea{height:38px;resize:vertical}.sectionTitle{margin:0 0 10px;font-size:20px}.themes{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}.theme{border:2px solid transparent;border-radius:12px;padding:8px 4px;text-align:center;background:#f5f7fc;cursor:pointer;font-weight:800;font-size:12px}.theme.on{border-color:#6254dd;background:#efedff}.rank{width:100%;border-collapse:collapse}.rank th,.rank td{padding:8px;border-bottom:1px solid #edf0f6;text-align:left}.muted{font-size:13px;color:#727b92}.toast{position:fixed;right:18px;top:70px;z-index:99999;background:#27314c;color:white;border-radius:13px;padding:11px 15px;font-weight:900;box-shadow:0 8px 25px #0003;opacity:0;transform:translateY(-8px);pointer-events:none;transition:.2s}.toast.show{opacity:1;transform:none}.login{position:fixed;inset:0;background:#eef2ff;z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px}.loginbox{width:min(410px,100%);background:white;padding:22px;border-radius:22px;box-shadow:0 14px 40px #27314c20}.loginbox input{width:100%;padding:11px;border:1px solid #ccd4e5;border-radius:11px;margin:8px 0}.hidden{display:none!important}@media(max-width:850px){.settings{grid-template-columns:repeat(2,1fr)}.themes{grid-template-columns:repeat(3,1fr)}}@media(max-width:520px){.settings{grid-template-columns:1fr 1fr}.wrap{padding:8px}.top{padding:10px}.top h1{font-size:18px}.roombar .btn{flex:1}.themes{grid-template-columns:repeat(3,1fr)}}
-.player{max-width:900px;margin:auto}.joinbox{max-width:480px;margin:40px auto}.joinbox input{width:100%;height:44px;border:1px solid #ccd4e5;border-radius:11px;padding:10px}.game{height:min(68vh,650px);min-height:500px;position:relative;overflow:hidden;border-radius:20px;border:1px solid #d7ddec;background:#cfefff}.game:before,.game:after{content:"";position:absolute;pointer-events:none;opacity:.22;font-size:70px}.game:before{left:12px;bottom:20px}.game:after{right:12px;top:120px}.game[data-bg=sky]{background:linear-gradient(#bfe9ff,#e8f6cf)}.game[data-bg=sky]:before{content:"🌼🌿"}.game[data-bg=sky]:after{content:"☁️"}.game[data-bg=stars]{background:linear-gradient(#192653,#3c3970);color:white}.game[data-bg=stars]:before{content:"✨⭐"}.game[data-bg=stars]:after{content:"🌙"}.game[data-bg=forest]{background:linear-gradient(#cdeccf,#8dc9a0)}.game[data-bg=forest]:before{content:"🌿🍃"}.game[data-bg=forest]:after{content:"🌳"}.game[data-bg=ocean]{background:linear-gradient(#bdeeff,#75c9e9)}.game[data-bg=ocean]:before{content:"🌿🐚"}.game[data-bg=ocean]:after{content:"🐠🫧"}.game[data-bg=candy]{background:linear-gradient(#ffe1f0,#fff0c7)}.game[data-bg=candy]:before{content:"🍬🍭"}.game[data-bg=candy]:after{content:"🧁"}.game[data-bg=space]{background:linear-gradient(#171b43,#43336b);color:white}.game[data-bg=space]:before{content:"🪐✨"}.game[data-bg=space]:after{content:"🚀"}.question{position:relative;z-index:5;margin:10px;background:#fffffff0;color:#27314c;border-radius:16px;padding:12px;text-align:center;font-size:clamp(21px,5vw,34px);font-weight:1000;box-shadow:0 4px 14px #0001}.hud{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:7px}.drop{position:absolute;z-index:4;top:105px;min-width:70px;max-width:145px;min-height:58px;padding:9px;border:3px solid #fff;border-radius:24px;background:#ffdb62;color:#27314c;box-shadow:0 4px 12px #0002;font-weight:1000;font-size:clamp(16px,4vw,22px);overflow-wrap:anywhere}.drop.long{max-width:130px;min-height:75px;border-radius:17px}
-.drop[data-shape="circle"]{border-radius:50%;aspect-ratio:1/1;min-width:70px}
-.drop[data-shape="square"]{border-radius:10px}
-.drop[data-shape="diamond"]{border-radius:12px;transform:rotate(45deg)}
-.drop[data-shape="diamond"] span{display:block;transform:rotate(-45deg)}
-.drop[data-shape="heart"]{border-radius:45% 45% 52% 52%;background:#ffd5e5}
-.drop[data-shape="hex"]{border-radius:8px;clip-path:polygon(25% 5%,75% 5%,100% 50%,75% 95%,25% 95%,0 50%)}
-.drop[data-shape="balloon"]{border-radius:50% 50% 48% 48%;background:#ffd56b;min-height:78px}
-.drop[data-shape="balloon"]:after{content:"";position:absolute;width:2px;height:28px;background:#59627a;left:50%;top:100%}
-.drop[data-shape="cloud"]{border-radius:999px;background:#fff}
-.overlay{position:absolute;inset:0;z-index:30;background:#26304cdd;color:white;display:flex;align-items:center;justify-content:center;font-size:65px;font-weight:1000}.waitgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.waititem{background:#f5f6ff;border-radius:12px;padding:9px;font-weight:800}@media(max-width:520px){.joinbox{margin:15px auto}.game{min-height:520px}.drop{max-width:112px;font-size:16px}.waitgrid{grid-template-columns:1fr 1fr}}</style></head><body>
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>極速答題王</title><style>
+*{box-sizing:border-box}
+:root{--purple:#6353df;--ink:#27314c;--line:#dfe4f1;--soft:#f5f7ff}
+body{margin:0;font-family:system-ui,-apple-system,"Noto Sans TC",sans-serif;color:var(--ink);background:
+radial-gradient(circle at 10% 20%,#765ce913 0 38px,transparent 39px),
+radial-gradient(circle at 92% 18%,#ffc85718 0 32px,transparent 33px),
+radial-gradient(circle at 78% 82%,#50cda718 0 44px,transparent 45px),
+linear-gradient(180deg,#f6f7ff,#edf2fb);min-height:100vh}
+button,input,select,textarea{font:inherit}
+.top{background:linear-gradient(120deg,#5144c7,#795fe7);color:#fff;min-height:58px;padding:9px 16px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 18px #4434a52b}
+.top h1{font-size:21px;margin:0}.wrap{width:min(1200px,calc(100% - 18px));margin:9px auto}
+.card{background:#fffffff2;border:1px solid var(--line);border-radius:16px;padding:11px;margin-bottom:8px;box-shadow:0 6px 18px #34406b0b}
+.btn{border:0;border-radius:10px;padding:8px 12px;font-weight:850;background:var(--purple);color:white;cursor:pointer;white-space:nowrap}
+.btn.alt{background:#efefff;color:#4e479e}.btn.green{background:#168d57}.btn.orange{background:#e47c3e}.btn.red{background:#d65362}
+.roombar{display:flex;gap:7px;align-items:center;flex-wrap:wrap}.pill{display:inline-flex;align-items:center;padding:7px 10px;border-radius:999px;background:#eff1ff;font-weight:850}
+.muted{color:#70798e;font-size:13px}.hidden{display:none!important}
+.toast{position:fixed;right:16px;top:70px;z-index:99999;background:#27314c;color:#fff;border-radius:12px;padding:10px 14px;font-weight:850;box-shadow:0 8px 24px #0003;opacity:0;transform:translateY(-8px);transition:.18s;pointer-events:none}.toast.show{opacity:1;transform:none}
+.modal{position:fixed;inset:0;background:#17213b8a;z-index:5000;display:flex;align-items:center;justify-content:center;padding:16px}.modalbox{width:min(520px,100%);max-height:85vh;overflow:auto;background:#fff;border-radius:18px;padding:18px;box-shadow:0 20px 60px #0004}.modalbox h2{margin-top:0}.modalbox hr{border:0;border-top:1px solid #e8ebf3}
+.login{position:fixed;inset:0;background:linear-gradient(140deg,#eef1ff,#f8fbff);z-index:9999;display:flex;align-items:center;justify-content:center;padding:18px}.loginbox{width:min(400px,100%);background:#fff;border:1px solid var(--line);padding:20px;border-radius:20px;box-shadow:0 16px 45px #27314c20}.loginbox input{width:100%;padding:10px;border:1px solid #ccd4e5;border-radius:10px;margin:8px 0}
+
+.player{max-width:980px}.joinbox{max-width:500px;margin:45px auto;padding:22px;background:linear-gradient(145deg,#fffffffa,#f6f3fffa)}.joinbox:before{content:"⚡  ⭐  🎮  ❓";display:block;text-align:center;font-size:32px;letter-spacing:14px;opacity:.35;margin-bottom:6px}.joinbox input{width:100%;height:44px;border:1px solid #ccd4e5;border-radius:10px;padding:10px}
+.waitgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.waititem{background:#f4f5ff;border:1px solid #e7e9f6;border-radius:11px;padding:9px;font-weight:800}
+.game{height:min(70vh,680px);min-height:520px;position:relative;overflow:hidden;border-radius:20px;border:1px solid #d5dbea;box-shadow:inset 0 0 45px #fff5}
+.game[data-bg="sky"]{background:radial-gradient(ellipse at 18% 18%,#fff 0 6%,transparent 7%),radial-gradient(ellipse at 26% 17%,#fff 0 7%,transparent 8%),radial-gradient(ellipse at 82% 25%,#fff 0 8%,transparent 9%),linear-gradient(180deg,#aee1ff 0 62%,#bfe6a9 63% 100%)}.game[data-bg="sky"]:after{content:"";position:absolute;left:-5%;right:-5%;bottom:-3%;height:26%;background:radial-gradient(ellipse at 20% 100%,#85c66a 0 45%,transparent 46%),radial-gradient(ellipse at 70% 100%,#6fb85c 0 48%,transparent 49%);opacity:.65}
+.game[data-bg="stars"]{background:radial-gradient(circle at 15% 18%,#fff9 0 2px,transparent 3px),radial-gradient(circle at 70% 22%,#fff8 0 2px,transparent 3px),radial-gradient(circle at 88% 55%,#fff8 0 3px,transparent 4px),radial-gradient(circle at 35% 65%,#fff7 0 2px,transparent 3px),linear-gradient(#111b49,#332866)}.game[data-bg="stars"]:after{content:"☾";position:absolute;right:7%;top:16%;font-size:90px;color:#ffe9a8;opacity:.28}
+.game[data-bg="forest"]{background:linear-gradient(#c8f0d1,#8bc999)}.game[data-bg="forest"]:after{content:"🌲  🌿       🌳  🍃";position:absolute;left:2%;right:2%;bottom:3%;font-size:62px;opacity:.28;white-space:pre}
+.game[data-bg="ocean"]{background:radial-gradient(circle at 10% 25%,#fff8 0 5px,transparent 6px),radial-gradient(circle at 83% 40%,#fff7 0 7px,transparent 8px),linear-gradient(#a9ecff,#55b9da)}.game[data-bg="ocean"]:after{content:"🐠   🫧      🐚   🌿";position:absolute;left:3%;right:3%;bottom:4%;font-size:55px;opacity:.22}
+.game[data-bg="candy"]{background:radial-gradient(circle at 18% 22%,#fff5 0 35px,transparent 36px),linear-gradient(135deg,#ffd9ed,#fff0b9)}.game[data-bg="candy"]:after{content:"🍭      🍬   🧁      🍩";position:absolute;left:3%;right:3%;bottom:5%;font-size:52px;opacity:.2}
+.game[data-bg="space"]{background:radial-gradient(circle at 20% 25%,#b6a0ff55 0 65px,transparent 66px),radial-gradient(circle at 80% 70%,#7ae0ff33 0 90px,transparent 91px),linear-gradient(#101534,#38275d)}.game[data-bg="space"]:after{content:"🪐       ✨      🚀";position:absolute;left:4%;right:4%;bottom:7%;font-size:58px;opacity:.22}
+.question{position:relative;z-index:20;margin:10px;background:#fffffff2;color:#27314c;border-radius:15px;padding:12px;text-align:center;font-size:clamp(22px,4.5vw,34px);font-weight:950;box-shadow:0 4px 14px #0001}
+.hud{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:8px 0}.timerbox{position:relative;z-index:25;margin:0 10px 4px;height:13px;background:#ffffffa8;border-radius:999px;overflow:hidden;border:1px solid #ffffffb8}.timerbar{height:100%;width:100%;background:linear-gradient(90deg,#35c17a,#f5c04d);transition:width .2s linear}.timerbar.danger{background:linear-gradient(90deg,#f55,#ff9d5c)}
+.drop{position:absolute;z-index:15;min-width:76px;max-width:155px;min-height:62px;border:3px solid #fff;box-shadow:0 6px 16px #0002;font-weight:950;font-size:clamp(16px,3.5vw,21px);color:#27314c;cursor:pointer;padding:10px;overflow-wrap:anywhere;background:#ffd85f}
+.drop.long{max-width:145px;min-height:78px;border-radius:18px}
+.drop[data-shape="star"]{clip-path:polygon(50% 0%,61% 34%,98% 35%,68% 56%,79% 92%,50% 71%,21% 92%,32% 56%,2% 35%,39% 34%);padding:18px 14px;min-height:86px}
+.drop[data-shape="circle"]{border-radius:50%;aspect-ratio:1/1;min-width:78px}
+.drop[data-shape="square"]{border-radius:9px}
+.drop[data-shape="diamond"]{clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);padding:20px}
+.drop[data-shape="heart"]{clip-path:polygon(50% 92%,8% 50%,5% 27%,18% 10%,38% 10%,50% 25%,62% 10%,82% 10%,95% 27%,92% 50%);background:#ffb8cf;padding:20px 13px}
+.drop[data-shape="hex"]{clip-path:polygon(25% 5%,75% 5%,100% 50%,75% 95%,25% 95%,0 50%);padding:16px}
+.drop[data-shape="balloon"]{border-radius:50% 50% 46% 46%;min-height:92px;background:#ffd36b;padding-bottom:18px}.drop[data-shape="balloon"]:after{content:"";position:absolute;left:50%;top:100%;width:2px;height:30px;background:#5c6478;transform:translateX(-50%)}
+.drop[data-shape="cloud"]{border-radius:999px;background:#fff;box-shadow:18px -10px 0 -5px #fff,-18px -7px 0 -7px #fff,0 6px 16px #0002}
+.feedback{position:absolute;z-index:100;left:50%;top:47%;transform:translate(-50%,-50%) scale(.8);font-size:clamp(34px,8vw,68px);font-weight:1000;text-shadow:0 3px 8px #fff,0 4px 16px #0002;opacity:0;pointer-events:none}.feedback.show{animation:pop .65s ease}.feedback.good{color:#138b50}.feedback.bad{color:#d54355}.feedback.time{color:#e48b26}@keyframes pop{0%{opacity:0;transform:translate(-50%,-50%) scale(.6)}25%{opacity:1;transform:translate(-50%,-50%) scale(1.18)}75%{opacity:1}100%{opacity:0;transform:translate(-50%,-58%) scale(1)}}
+.overlay{position:absolute;inset:0;z-index:200;background:linear-gradient(145deg,#3f35a9e8,#6a50d9e8);color:white;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}.bigcount{font-size:clamp(72px,18vw,150px);font-weight:1000;line-height:1}.countlabel{font-size:20px;font-weight:850;margin-bottom:12px}
+@media(max-width:600px){.waitgrid{grid-template-columns:1fr 1fr}.game{min-height:540px}.drop{max-width:120px;font-size:16px}.joinbox{margin:18px auto}}
+</style></head><body>
+<div id="modal" class="modal hidden"><div class="modalbox"><div id="modalBody"></div><button id="modalClose" class="btn" style="width:100%">關閉</button></div></div>
 <header class="top"><h1>⚡ 極速答題王</h1></header><main class="wrap player">
-<section id="join" class="card joinbox"><h2>🎮 加入遊戲</h2><p id="roomLabel" class="pill"></p><p class="muted">輸入你的玩家名稱後加入等待室。</p><input id="name" maxlength="20" placeholder="玩家名稱"><button id="joinBtn" class="btn" style="width:100%;margin-top:10px">加入遊戲</button><p id="joinMsg" style="font-weight:800"></p></section>
-<section id="wait" class="card hidden"><h2>⏳ 等待比賽開始</h2><div class="waitgrid"><div class="waititem" id="wName"></div><div class="waititem" id="wCount"></div><div class="waititem" id="wCat"></div><div class="waititem" id="wDiff"></div><div class="waititem" id="wFinish"></div><div class="waititem" id="wTime"></div></div><p id="wNote"></p><div class="roombar"><button id="waitRules" class="btn alt">📖 規則說明</button><button id="waitScore" class="btn alt">💰 分數說明</button></div></section>
-<section id="play" class="hidden"><div class="hud"><span id="gameTime" class="pill">比賽 --:--</span><span id="qTime" class="pill">本題 --</span><span id="myRank" class="pill">🏆 --</span><span id="score" class="pill">⭐ 0分</span></div><div id="game" class="game" data-bg="sky"><div id="question" class="question"></div><div id="countdown" class="overlay hidden"></div></div><div class="card roombar"><b id="stats">答對0｜答錯0｜未作答0</b><span style="flex:1"></span><button id="showRank" class="btn alt">🏆 排行榜</button></div></section>
-<section id="result" class="card hidden"><h2>🏆 比賽結果</h2><div id="myResult"></div><button id="fullRank" class="btn">查看完整排行榜</button></section></main>
+<section id="join" class="card joinbox"><h2>🎮 加入遊戲</h2><p id="roomLabel" class="pill"></p><p class="muted">輸入玩家名稱，進入等待室。</p><input id="name" maxlength="20" placeholder="玩家名稱"><button id="joinBtn" class="btn" style="width:100%;margin-top:10px">加入遊戲</button><p id="joinMsg" style="font-weight:800"></p></section>
+<section id="wait" class="card hidden"><h2>⏳ 等待比賽開始</h2><div class="waitgrid"><div class="waititem" id="wName"></div><div class="waititem" id="wCount"></div><div class="waititem" id="wCat"></div><div class="waititem" id="wDiff"></div><div class="waititem" id="wFinish"></div><div class="waititem" id="wTime"></div></div><p id="wNote"></p><button id="waitInfo" class="btn alt">📖 遊戲規則／分數</button></section>
+<section id="play" class="hidden"><div class="hud"><span id="gameTime" class="pill">比賽 --:--</span><span id="qTime" class="pill">本題 --</span><span id="myRank" class="pill">🏆 --</span><span id="score" class="pill">⭐ 0分</span></div><div id="game" class="game" data-bg="sky"><div id="question" class="question">準備中</div><div class="timerbox"><div id="timerbar" class="timerbar"></div></div><div id="feedback" class="feedback"></div><div id="countdown" class="overlay hidden"><div class="countlabel">比賽即將開始</div><div id="bigcount" class="bigcount"></div></div></div><div class="card roombar"><b id="stats">答對0｜答錯0｜未作答0</b><span style="flex:1"></span><button id="playInfo" class="btn alt">📖 規則／分數</button><button id="showRank" class="btn alt">🏆 排行榜</button></div></section>
+<section id="result" class="card hidden"><h2>🏆 比賽結果</h2><div id="myResult"></div><button id="fullRank" class="btn">查看完整排行榜</button></section>
+</main>
 <script src="/socket.io/socket.io.js"></script><script>
-const s=io(),$=x=>document.getElementById(x),code=new URLSearchParams(location.search).get("room")||"";let token=localStorage.getItem("eq_"+code)||"",room=null,me=null,qInt=null,answered=false,current=null;
+const s=io(),$=id=>document.getElementById(id),code=new URLSearchParams(location.search).get("room")||"";
+let token=localStorage.getItem("eq_"+code)||"",room=null,me=null,qInt=null,answered=false,current=null,spawnTimers=[],countInt=null,deck=[],lastMath=[];
 $("roomLabel").textContent=code?"房號："+code:"⚠️ 玩家連結缺少房號";if(!code)$("joinBtn").disabled=true;
 const catName={math:"🔢 數學",chinese:"🀄 國文／文字",classic:"📜 國學／詩詞",life:"🌱 生活常識",knowledge:"🌏 地理／自然／知識",fun:"🧠 趣味題庫",random:"🎲 隨機混合"},diffName={easy:"簡單",normal:"普通",hard:"困難",random:"隨機"};
-const banks={chinese:[["畫蛇添＿","足",["手","尾","頭","花","眼"]],["「開心」的近義詞？","快樂",["難過","生氣","害怕","安靜","疲累"]]],classic:[["「床前明月光」下一句？","疑是地上霜",["舉頭望明月","低頭思故鄉","春眠不覺曉","處處聞啼鳥"]],["人之初，下一句？","性本善",["習相遠","貴以專","性乃遷","教之道"]]],life:[["下雨天通常使用什麼遮雨？","雨傘",["湯匙","枕頭","尺","碗","鞋"]],["紅燈時應該？","停下等待",["快速通過","加速","閉眼走","倒著走"]]],knowledge:[["台灣最高的山是？","玉山",["阿里山","陽明山","合歡山","雪山"]],["地球繞著什麼運行？","太陽",["月球","火星","木星","北極星"]]],fun:[["🐶 代表哪種動物？","狗",["貓","兔子","老虎","熊"]],["哪一個是交通工具？","公車",["鉛筆","杯子","枕頭","書本"]]]};
-function mathQ(){let a=Math.ceil(Math.random()*20),b=Math.ceil(Math.random()*15),op=["+","-","×"][Math.floor(Math.random()*3)],ans;if(op==="+")ans=a+b;else if(op==="-"){if(b>a)[a,b]=[b,a];ans=a-b}else{a=Math.ceil(Math.random()*9);b=Math.ceil(Math.random()*9);ans=a*b}let w=new Set;while(w.size<7){let x=ans+Math.floor(Math.random()*17)-8;if(x>=0&&x!==ans)w.add(String(x))}return[`${a} ${op} ${b} = ?`,String(ans),[...w]]}
-function getQ(){let c=room.settings.category;if(c==="random")c=["math","chinese","classic","life","knowledge","fun"][Math.floor(Math.random()*6)];if(c==="math")return mathQ();let a=banks[c]||banks.life;return a[Math.floor(Math.random()*a.length)]}
-function join(){let name=$("name").value.trim();if(!token&&!name){$("joinMsg").textContent="⚠️ 請輸入玩家名稱";return}$("joinMsg").textContent="正在加入…";s.emit("player:join",{code,name,token},x=>{if(!x||!x.ok){$("joinMsg").textContent="❌ "+(x?.msg||"加入失敗，請再試一次");return}token=x.token;localStorage.setItem("eq_"+code,token);me=x.player;room=x.room;$("join").classList.add("hidden");if(room.status==="playing")startUI();else waitUI()})}
+const banks={
+chinese:[
+["「畫蛇添足」的「足」是什麼意思？","腳",["手","尾巴","頭","眼睛","道路","工具","速度","聲音","顏色"]],
+["「開心」的近義詞？","快樂",["難過","生氣","害怕","疲累","安靜","吵鬧","粗心","寒冷","遙遠"]],
+["「巨大」的反義詞？","微小",["寬廣","高大","強壯","快速","明亮","整齊","熱鬧","溫暖","堅固"]],
+["哪個成語表示非常專心？","全神貫注",["東張西望","手忙腳亂","七上八下","一知半解","自言自語","大吃一驚","無精打采","半途而廢","四面八方"]],
+["「一＿千里」應填？","日",["月","天","年","步","眼","手","口","心","里"]],
+["「杯」常搭配哪個量詞？","一個杯子",["一條杯子","一匹杯子","一座杯子","一艘杯子","一頭杯子","一枚杯子","一棟杯子","一雙杯子","一株杯子"]],
+["哪個字和「晴」同音？","情",["清","青","請","睛","精","靜","景","井","今"]],
+["「迅速」最接近哪個意思？","很快",["很慢","很冷","很遠","很重","很暗","很甜","很吵","很窄","很軟"]]
+],
+classic:[
+["「床前明月光」下一句？","疑是地上霜",["舉頭望明月","低頭思故鄉","春眠不覺曉","處處聞啼鳥","白日依山盡","黃河入海流","海上生明月","粒粒皆辛苦","更上一層樓"]],
+["「舉頭望明月」下一句？","低頭思故鄉",["疑是地上霜","春眠不覺曉","處處聞啼鳥","欲窮千里目","更上一層樓","白日依山盡","黃河入海流","鋤禾日當午","誰知盤中飧"]],
+["人之初，下一句？","性本善",["習相遠","貴以專","性乃遷","教之道","苟不教","昔孟母","子不學","幼不學","玉不琢"]],
+["「春眠不覺曉」下一句？","處處聞啼鳥",["夜來風雨聲","花落知多少","低頭思故鄉","疑是地上霜","白日依山盡","更上一層樓","粒粒皆辛苦","誰知盤中飧","欲窮千里目"]],
+["「白日依山盡」下一句？","黃河入海流",["欲窮千里目","更上一層樓","舉頭望明月","低頭思故鄉","處處聞啼鳥","花落知多少","海上生明月","天涯共此時","粒粒皆辛苦"]],
+["「欲窮千里目」下一句？","更上一層樓",["黃河入海流","白日依山盡","低頭思故鄉","處處聞啼鳥","花落知多少","疑是地上霜","粒粒皆辛苦","天涯共此時","海上生明月"]],
+["「誰知盤中飧」下一句？","粒粒皆辛苦",["鋤禾日當午","汗滴禾下土","低頭思故鄉","黃河入海流","更上一層樓","處處聞啼鳥","花落知多少","海上生明月","天涯共此時"]],
+["「海上生明月」下一句？","天涯共此時",["低頭思故鄉","更上一層樓","黃河入海流","粒粒皆辛苦","處處聞啼鳥","花落知多少","疑是地上霜","白日依山盡","春眠不覺曉"]]
+],
+life:[
+["下雨天常用什麼遮雨？","雨傘",["湯匙","枕頭","尺","碗","拖把","書包","杯子","梳子","盤子"]],
+["紅燈時應該？","停下等待",["快速通過","加速前進","倒著走","閉眼走","按喇叭衝過","站在車道","追車","逆向走","跨越護欄"]],
+["冰箱主要用來？","冷藏食物",["洗衣服","煮飯","吹頭髮","照明","掃地","量體溫","寫字","澆花","剪紙"]],
+["刷牙通常使用？","牙刷",["湯匙","筷子","尺","剪刀","杯墊","拖鞋","雨衣","毛巾","鉛筆"]],
+["垃圾分類有助於？","資源回收",["增加垃圾","浪費水","製造噪音","增加塞車","讓食物變甜","讓天氣變冷","讓手機更快","增加灰塵","讓路變窄"]],
+["看到行人穿越道應？","注意行人",["加速通過","按喇叭逼近","停在斑馬線","逆向超車","閉眼開車","邊開邊玩手機","突然轉彎","占用人行道","不看號誌"]],
+["天氣很熱時應適量？","補充水分",["穿厚外套","關掉風扇","一直曬太陽","不喝水","睡在車內","蓋厚棉被","跑到車道","摸熱鍋","吃生米"]],
+["廚房鍋子很燙時應？","使用隔熱用品",["直接抓取","用紙碰火","潑油","放在床上","用塑膠袋包火","讓小孩拿","徒手搬","靠臉測溫","丟向別人"]]
+],
+knowledge:[
+["台灣最高的山是？","玉山",["阿里山","陽明山","合歡山","大屯山","七星山","壽山","觀音山","虎山","象山"]],
+["地球繞著什麼運行？","太陽",["月球","火星","木星","北極星","土星","金星","水星","海王星","彗星"]],
+["太陽系最大的行星？","木星",["地球","火星","金星","水星","月球","海王星","天王星","冥王星","太陽"]],
+["植物進行光合作用需要？","陽光",["塑膠","玻璃珠","鐵釘","橡皮擦","沙發","遙控器","硬幣","毛巾","積木"]],
+["台灣的首都是？","臺北",["高雄","臺中","臺南","花蓮","嘉義","新竹","屏東","宜蘭","基隆"]],
+["世界最大的海洋？","太平洋",["大西洋","印度洋","北冰洋","地中海","紅海","黑海","波羅的海","加勒比海","南海"]],
+["水在攝氏幾度附近結冰？","0度",["10度","20度","30度","40度","50度","60度","70度","80度","100度"]],
+["月球是地球的？","天然衛星",["恆星","行星","彗星","星系","大陸","海洋","火山","雲層","人造衛星"]]
+],
+fun:[
+["🐶 代表哪種動物？","狗",["貓","兔子","老虎","熊","猴子","馬","羊","牛","狐狸"]],
+["哪一個是交通工具？","公車",["鉛筆","杯子","枕頭","書本","橡皮擦","湯匙","毛巾","牙刷","盤子"]],
+["哪一個和其他三個不同類？","香蕉",["公車","火車","捷運","汽車","機車","腳踏車","計程車","卡車","船"]],
+["什麼東西有很多牙齒卻不會咬人？","梳子",["老虎","鯊魚","狗","獅子","鱷魚","狼","蛇","熊","貓"]],
+["🌧️☂️ 最可能表示？","下雨",["炎熱","下雪","地震","颱風眼","日出","停電","迷路","游泳","睡覺"]],
+["哪一個不是水果？","胡蘿蔔",["蘋果","香蕉","芒果","葡萄","橘子","西瓜","草莓","鳳梨","梨子"]],
+["什麼東西越洗越髒？","水",["肥皂","毛巾","衣服","盤子","杯子","牙刷","地板","窗戶","鞋子"]],
+["哪一個通常會飛？","飛機",["冰箱","沙發","浴缸","桌子","枕頭","書櫃","衣櫥","馬桶","鍋子"]]
+]
+};
+function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function mathQ(){let tries=0,q;do{let a=Math.ceil(Math.random()*20),b=Math.ceil(Math.random()*15),op=["+","-","×"][Math.floor(Math.random()*3)],ans;if(op==="+")ans=a+b;else if(op==="-"){if(b>a)[a,b]=[b,a];ans=a-b}else{a=Math.ceil(Math.random()*9);b=Math.ceil(Math.random()*9);ans=a*b}let w=new Set;while(w.size<9){let x=ans+Math.floor(Math.random()*21)-10;if(x>=0&&x!==ans)w.add(String(x))}q=[`${a} ${op} ${b} = ?`,String(ans),[...w]];tries++}while(lastMath.includes(q[0])&&tries<30);lastMath.push(q[0]);if(lastMath.length>12)lastMath.shift();return q}
+function refillDeck(){let c=room.settings.category;if(c==="random"){deck=[];["chinese","classic","life","knowledge","fun"].forEach(k=>deck.push(...banks[k].map(q=>[k,q])));deck=shuffle(deck)}else if(c!=="math")deck=shuffle((banks[c]||banks.fun).map(q=>[c,q]));}
+function getQ(){let c=room.settings.category;if(c==="math")return mathQ();if(!deck.length)refillDeck();return deck.pop()[1]}
+function modalInfo(){if(!room)return;let v=room.settings,finish=v.finishMode==="time"?`遊戲 ${v.duration} 分鐘，時間到結束。`:v.finishMode==="target"?`答對 ${v.targetCorrect} 題即完成。`:`第一位答對 ${v.targetCorrect} 題時結束。`;document.getElementById("modalBody").innerHTML=`<h2>📖 遊戲規則／分數</h2><p>題庫：<b>${catName[v.category]||"題庫"}</b>　難度：<b>${diffName[v.difficulty]||"普通"}</b></p><p>開賽前全房同步倒數 <b>${v.startCountdown} 秒</b>。正式開始後，每題限時 <b>${v.questionSeconds} 秒</b>，直接點擊飄動的正確答案。</p><p>答錯後：<b>${v.wrongAction==="continue"?"錯誤答案爆掉並補新答案，繼續本題":"立即換下一題"}</b></p><p>${finish}</p><hr><p>✅ 答對：<b>${+v.correctPoints>=0?"+":""}${v.correctPoints} 分</b><br>💥 答錯：<b>${v.wrongPoints} 分</b><br>⏰ 未作答：<b>${v.timeoutPoints} 分</b></p>`;$("modal").classList.remove("hidden")}
+$("modalClose").onclick=()=>$("modal").classList.add("hidden");$("waitInfo").onclick=modalInfo;$("playInfo").onclick=modalInfo;
+function join(){let name=$("name").value.trim();if(!token&&!name){$("joinMsg").textContent="⚠️ 請輸入玩家名稱";return}$("joinMsg").textContent="正在加入…";s.emit("player:join",{code,name,token},x=>{if(!x?.ok){$("joinMsg").textContent="❌ "+(x?.msg||"加入失敗");return}token=x.token;localStorage.setItem("eq_"+code,token);me=x.player;room=x.room;$("join").classList.add("hidden");if(room.status==="countdown")showCountdown(room.countdownEndsAt);else if(room.status==="playing")startUI();else waitUI()})}
 $("joinBtn").onclick=join;$("name").onkeydown=e=>{if(e.key==="Enter")join()};if(token)join();
 function waitUI(){$("wait").classList.remove("hidden");updateWait()}
 function updateWait(){if(!room||!me)return;$("wName").textContent="👤 "+me.name;$("wCount").textContent="👥 目前 "+room.count+" 人";$("wCat").textContent="📚 "+(catName[room.settings.category]||"題庫");$("wDiff").textContent="🎯 "+(diffName[room.settings.difficulty]||"普通");$("wFinish").textContent="🏁 "+(room.settings.finishMode==="time"?"時間到結束":room.settings.finishMode==="target"?"指定答對題數":"第一位完成");$("wTime").textContent=room.settings.finishMode==="time"?`⏱️ ${room.settings.duration}分鐘`:`✅ ${room.settings.targetCorrect}題`;$("wNote").textContent=room.settings.note?"📝 "+room.settings.note:""}
-function info(){if(!room)return;let v=room.settings;alert(`題庫：${catName[v.category]||"隨機"}\n規則：看題目並直接點擊掉落的正確答案。\n答錯後：${v.wrongAction==="continue"?"繼續本題":"立即下一題"}\n每題：${v.questionSeconds}秒\n\n答對：+${v.correctPoints}分\n答錯：${v.wrongPoints}分\n未作答：${v.timeoutPoints}分`)}$("waitRules").onclick=info;$("waitScore").onclick=info;
 s.on("room:update",r=>{room=r;if(me){let p=r.ranking.find(x=>x.name===me.name);if(p)me={...me,...p};updateWait();renderMe()}});
-s.on("game:countdown",()=>{$("wait").classList.add("hidden");$("play").classList.remove("hidden");let n=3;$("countdown").classList.remove("hidden");$("countdown").textContent=n;let t=setInterval(()=>{n--;$("countdown").textContent=n>0?n:n===0?"GO！":"";if(n<0){clearInterval(t);$("countdown").classList.add("hidden")}},700)});
-s.on("game:start",r=>{room=r;startUI()});s.on("game:ended",x=>showResult(x.ranking));s.on("room:deleted",()=>{alert("主控已刪除此房間");localStorage.removeItem("eq_"+code);location.href=location.pathname});
-function startUI(){$("join").classList.add("hidden");$("wait").classList.add("hidden");$("play").classList.remove("hidden");$("game").dataset.bg=room.settings.bg||"sky";nextQ();renderMe()}
+s.on("game:countdown",x=>showCountdown(x.endsAt));
+function showCountdown(endsAt){clearInterval(countInt);$("join").classList.add("hidden");$("wait").classList.add("hidden");$("play").classList.remove("hidden");$("game").dataset.bg=room?.settings?.bg||"sky";$("countdown").classList.remove("hidden");function tick(){let left=Math.max(0,Math.ceil((endsAt-Date.now())/1000));$("bigcount").textContent=left>0?left:"GO！";if(left<=0){clearInterval(countInt);setTimeout(()=>$("countdown").classList.add("hidden"),700)}}tick();countInt=setInterval(tick,250)}
+s.on("game:start",r=>{room=r;$("countdown").classList.add("hidden");startUI()});
+s.on("game:ended",x=>showResult(x.ranking));s.on("room:deleted",()=>{alert("主控已刪除此房間");localStorage.removeItem("eq_"+code);location.href=location.pathname});
+function startUI(){$("join").classList.add("hidden");$("wait").classList.add("hidden");$("play").classList.remove("hidden");$("game").dataset.bg=room.settings.bg||"sky";deck=[];nextQ();renderMe()}
 function renderMe(){if(!room||!me)return;let i=room.ranking.findIndex(x=>x.name===me.name);$("myRank").textContent="🏆 第"+(i+1)+"名";$("score").textContent="⭐ "+me.score+"分";$("stats").textContent=`答對${me.correct}｜答錯${me.wrong}｜未作答${me.timeout}`}
 setInterval(()=>{if(room?.status==="playing"){let sec=room.endsAt?Math.max(0,Math.ceil((room.endsAt-Date.now())/1000)):0;$("gameTime").textContent=room.endsAt?`比賽 ${Math.floor(sec/60)}:${String(sec%60).padStart(2,"0")}`:"比賽進行中"}},500);
-function nextQ(){clearInterval(qInt);clearDrops();answered=false;current=getQ();$("question").textContent=current[0];let n=+room.settings.answerCount||6;if(current[1].length>6)n=Math.min(n,4);let arr=[current[1],...current[2].slice(0,n-1)].sort(()=>Math.random()-.5);arr.forEach((t,i)=>spawn(t,t===current[1],i,n,Math.random()*1300));let left=+room.settings.questionSeconds||15;$("qTime").textContent=`本題 ${left}秒`;qInt=setInterval(()=>{left--;$("qTime").textContent=`本題 ${left}秒`;if(left<=0){clearInterval(qInt);if(!answered){answered=true;clearDrops();s.emit("answer:result",{code,token,type:"timeout"},()=>setTimeout(nextQ,400))}}},1000)}
-let activeDrops=0,spawnTimers=[];
-function clearDrops(){spawnTimers.forEach(clearTimeout);spawnTimers=[];activeDrops=0;document.querySelectorAll(".drop").forEach(x=>x.remove())}
-function spawn(txt,correct,i,n,delay=0){
- let timer=setTimeout(()=>createDrop(txt,correct,i,n),delay);spawnTimers.push(timer)
-}
-function createDrop(txt,correct,i,n){
- if(answered||room?.status!=="playing")return;
- let d=document.createElement("button"),shape=room.settings.shape||"star";
- d.className="drop"+(txt.length>6?" long":"");d.dataset.shape=shape;
- d.innerHTML=shape==="diamond"?`<span>${txt}</span>`:txt;
- $("game").appendChild(d);activeDrops++;
- let g=$("game"),w=d.offsetWidth,h=d.offsetHeight;
- // Spawn across the full width, including partially outside edges.
- let x=Math.random()*(g.clientWidth+w*.7)-w*.35;
- let y=90-Math.random()*150;
- let base=room.settings.fallSpeed==="fast"?2.8:room.settings.fallSpeed==="slow"?1.25:1.9;
- let vy=base*(.72+Math.random()*.75);
- let vx=(Math.random()-.5)*(room.settings.fallSpeed==="fast"?2.8:room.settings.fallSpeed==="slow"?1.25:2.0);
- let phase=Math.random()*Math.PI*2,amp=10+Math.random()*34,freq=.018+Math.random()*.025,frame=0,dead=false;
- function removeAndReplace(){
-   if(dead)return;dead=true;d.remove();activeDrops=Math.max(0,activeDrops-1);
-   if(!answered&&room?.status==="playing")spawn(txt,correct,Math.random()*n,n,180+Math.random()*650);
- }
- function f(){
-   if(dead||!d.isConnected)return;
-   frame++;y+=vy;x+=vx+Math.sin(phase+frame*freq)*.22;
-   d.style.top=y+"px";d.style.left=(x+Math.sin(phase+frame*freq)*amp)+"px";
-   let rect=d.getBoundingClientRect(),gr=g.getBoundingClientRect();
-   // It is intentionally allowed to fly completely outside the game window.
-   if(rect.top>gr.bottom+55||rect.right<gr.left-55||rect.left>gr.right+55){removeAndReplace();return}
-   requestAnimationFrame(f)
- }
- requestAnimationFrame(f);
- let locked=false;
- d.onclick=()=>{
-   if(answered||locked)return;locked=true;
-   if(correct){
-     answered=true;clearInterval(qInt);
-     s.emit("answer:result",{code,token,type:"correct"},x=>{if(x?.ok){me=x.player;renderMe();clearDrops();setTimeout(nextQ,280)}})
-   }else{
-     s.emit("answer:result",{code,token,type:"wrong"},x=>{if(x?.ok){
-       me=x.player;renderMe();d.innerHTML="💥";
-       if(room.settings.wrongAction==="next"){answered=true;clearInterval(qInt);setTimeout(()=>{clearDrops();nextQ()},300)}
-       else setTimeout(removeAndReplace,170)
-     }})
-   }
- }
-}
-function showResult(rank){clearInterval(qInt);clearDrops();$("play").classList.add("hidden");$("result").classList.remove("hidden");let i=rank.findIndex(x=>x.name===me.name),p=rank[i];$("myResult").innerHTML=`<h2>第 ${i+1} 名｜${p.name}</h2><p>✅ ${p.correct}題　❌ ${p.wrong}題　⏰ ${p.timeout}題</p><h2>⭐ ${p.score}分</h2>`;$("fullRank").onclick=()=>alert(rank.map((p,i)=>`第${i+1}名｜${p.name}｜${p.score}分`).join("\n"))}$("showRank").onclick=()=>room&&alert(room.ranking.map((p,i)=>`第${i+1}名｜${p.name}｜${p.score}分`).join("\n"));
+function showFeedback(kind,text){const f=$("feedback");f.className="feedback "+kind;f.textContent=text;void f.offsetWidth;f.classList.add("show")}
+function clearDrops(){spawnTimers.forEach(clearTimeout);spawnTimers=[];document.querySelectorAll(".drop").forEach(x=>x.remove())}
+function nextQ(){clearInterval(qInt);clearDrops();answered=false;current=getQ();$("question").textContent=current[0];let n=+room.settings.answerCount||6;if(current[1].length>8)n=Math.min(n,4);else if(current[1].length>5)n=Math.min(n,6);let wrongs=shuffle(current[2]).slice(0,n-1),arr=shuffle([current[1],...wrongs]);arr.forEach((t,i)=>spawn(t,t===current[1],n,Math.random()*1400));let total=+room.settings.questionSeconds||15,left=total;$("qTime").textContent=`本題 ${left}秒`;$("timerbar").style.width="100%";$("timerbar").classList.remove("danger");qInt=setInterval(()=>{left=Math.max(0,left-0.2);let sec=Math.ceil(left);$("qTime").textContent=`本題 ${sec}秒`;$("timerbar").style.width=(left/total*100)+"%";$("timerbar").classList.toggle("danger",left<=5);if(left<=0){clearInterval(qInt);if(!answered){answered=true;clearDrops();showFeedback("time",`⏰ ${room.settings.timeoutPoints}`);s.emit("answer:result",{code,token,type:"timeout"},x=>{if(x?.ok){me=x.player;renderMe()}setTimeout(nextQ,700)})}}},200)}
+const shapeList=["star","circle","square","diamond","heart","hex","balloon","cloud"];
+function spawn(txt,correct,n,delay=0){let tm=setTimeout(()=>createDrop(txt,correct,n),delay);spawnTimers.push(tm)}
+function createDrop(txt,correct,n){if(answered||room?.status!=="playing")return;let d=document.createElement("button"),shape=room.settings.shape||"star";if(shape==="mixed")shape=shapeList[Math.floor(Math.random()*shapeList.length)];d.className="drop"+(txt.length>6?" long":"");d.dataset.shape=shape;d.textContent=txt;$("game").appendChild(d);
+let g=$("game"),w=d.offsetWidth,x=Math.random()*(g.clientWidth+w*.9)-w*.45,y=86-Math.random()*170;
+let base=room.settings.fallSpeed==="fast"?4.2:room.settings.fallSpeed==="slow"?1.65:2.7,vy=base*(.65+Math.random()*.8),vx=(Math.random()-.5)*(room.settings.fallSpeed==="fast"?4.3:room.settings.fallSpeed==="slow"?1.8:3.0),phase=Math.random()*6.28,amp=12+Math.random()*42,freq=.018+Math.random()*.035,frame=0,dead=false,lock=false;
+function replace(){if(dead)return;dead=true;d.remove();if(!answered&&room?.status==="playing")spawn(txt,correct,n,140+Math.random()*550)}
+function fly(){if(dead||!d.isConnected)return;frame++;y+=vy;x+=vx;d.style.top=y+"px";d.style.left=(x+Math.sin(phase+frame*freq)*amp)+"px";let r=d.getBoundingClientRect(),gr=g.getBoundingClientRect();if(r.top>gr.bottom+70||r.right<gr.left-70||r.left>gr.right+70){replace();return}requestAnimationFrame(fly)}requestAnimationFrame(fly);
+d.onclick=()=>{if(answered||lock)return;lock=true;if(correct){answered=true;clearInterval(qInt);showFeedback("good",`✅ +${room.settings.correctPoints}`);s.emit("answer:result",{code,token,type:"correct"},x=>{if(x?.ok){me=x.player;renderMe()}clearDrops();setTimeout(nextQ,650)})}else{showFeedback("bad",`💥 ${room.settings.wrongPoints}`);s.emit("answer:result",{code,token,type:"wrong"},x=>{if(x?.ok){me=x.player;renderMe();d.textContent="💥";if(room.settings.wrongAction==="next"){answered=true;clearInterval(qInt);setTimeout(()=>{clearDrops();nextQ()},650)}else setTimeout(replace,180)}})}}}
+function showResult(rank){clearInterval(qInt);clearDrops();$("play").classList.add("hidden");$("result").classList.remove("hidden");let i=rank.findIndex(x=>x.name===me.name),p=rank[i];$("myResult").innerHTML=`<h2>第 ${i+1} 名｜${p.name}</h2><p>✅ ${p.correct}題　❌ ${p.wrong}題　⏰ ${p.timeout}題</p><h2>⭐ ${p.score}分</h2>`;$("fullRank").onclick=()=>alert(rank.map((p,i)=>`第${i+1}名｜${p.name}｜${p.score}分`).join("\\n"))}
+$("showRank").onclick=()=>room&&alert(room.ranking.map((p,i)=>`第${i+1}名｜${p.name}｜${p.score}分`).join("\\n"));
 </script></body></html>
