@@ -17,13 +17,13 @@ button,input,select,textarea{font:inherit}
 .modal{position:fixed;inset:0;background:#17213b8a;z-index:5000;display:flex;align-items:center;justify-content:center;padding:16px}.modalbox{width:min(520px,100%);max-height:85vh;overflow:auto;background:#fff;border-radius:18px;padding:18px;box-shadow:0 20px 60px #0004}.modalbox h2{margin-top:0}.modalbox hr{border:0;border-top:1px solid #e8ebf3}
 .login{position:fixed;inset:0;background:linear-gradient(140deg,#eef1ff,#f8fbff);z-index:9999;display:flex;align-items:center;justify-content:center;padding:18px}.loginbox{width:min(400px,100%);background:#fff;border:1px solid var(--line);padding:20px;border-radius:20px;box-shadow:0 16px 45px #27314c20}.loginbox input{width:100%;padding:10px;border:1px solid #ccd4e5;border-radius:10px;margin:8px 0}
 
-.settings{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:7px 8px}.field label{display:block;font-size:12px;font-weight:900;margin:0 0 3px;color:#59627a}.field input,.field select{width:100%;height:35px;border:1px solid #ccd4e5;border-radius:9px;padding:5px 8px;background:white}.groupTitle{grid-column:1/-1;font-size:14px;font-weight:950;margin:3px 0 -1px;padding-top:3px;color:#4f46a7}.sectionTitle{font-size:19px;margin:0 0 9px}.rank{width:100%;border-collapse:collapse}.rank th,.rank td{padding:7px;border-bottom:1px solid #edf0f6;text-align:left}.roomActions{margin-top:7px;padding-top:7px;border-top:1px dashed #e0e5f0}@media(max-width:520px){.settings{grid-template-columns:1fr 1fr}.wrap{width:calc(100% - 10px)}.top h1{font-size:18px}.field input,.field select{height:37px}}.adminStatus{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-left:auto}.statusClock{background:#29234fd9;color:white;border-radius:999px;padding:7px 11px;font-weight:950}</style></head><body>
+.settings{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:7px 8px}.field label{display:block;font-size:12px;font-weight:900;margin:0 0 3px;color:#59627a}.field input,.field select{width:100%;height:35px;border:1px solid #ccd4e5;border-radius:9px;padding:5px 8px;background:white}.groupTitle{grid-column:1/-1;font-size:14px;font-weight:950;margin:3px 0 -1px;padding-top:3px;color:#4f46a7}.sectionTitle{font-size:19px;margin:0 0 9px}.rank{width:100%;border-collapse:collapse}.rank th,.rank td{padding:7px;border-bottom:1px solid #edf0f6;text-align:left}.roomActions{margin-top:7px;padding-top:7px;border-top:1px dashed #e0e5f0}@media(max-width:520px){.settings{grid-template-columns:1fr 1fr}.wrap{width:calc(100% - 10px)}.top h1{font-size:18px}.field input,.field select{height:37px}}.adminStatus{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.statusClock{display:inline-flex;align-items:center;background:#29234fd9;color:white;border-radius:999px;padding:7px 11px;font-weight:950;white-space:nowrap}</style></head><body>
 <div id="login" class="login"><div class="loginbox"><h2>🔐 主控登入</h2><input id="pw" type="password" placeholder="主控密碼"><button id="loginBtn" class="btn" style="width:100%">登入</button><p id="loginErr" class="muted"></p></div></div>
 <div id="toast" class="toast"></div>
 <div id="modal" class="modal hidden"><div class="modalbox"><div id="modalBody"></div><button id="modalClose" class="btn" style="width:100%">關閉</button></div></div>
 <header class="top"><h1>⚡ 極速答題王－主控台</h1><a class="btn alt" style="text-decoration:none" href="https://game-lobby-eo8o.onrender.com/">🏠 返回遊戲大廳</a></header>
 <main class="wrap">
-<section class="card"><div class="roombar"><button id="new" class="btn">＋ 新增房間</button><span id="room" class="pill">尚未建立房間</span><span id="topPlayers" class="pill">👥 目前玩家：0 位</span><button id="copyLink" class="btn alt">🔗 複製玩家連結</button><button id="copyText" class="btn alt">📋 複製分享文字</button></div><div class="roombar roomActions"><button id="start" class="btn green">▶ 開始遊戲</button><button id="end" class="btn orange">■ 結束遊戲</button><button id="del" class="btn red">🗑 刪除房間</button><span class="adminStatus"><span id="adminCountdown" class="statusClock hidden">⏱️ 開賽倒數 --</span><span id="adminGameTime" class="statusClock hidden">⏱️ 剩餘時間 --:--</span></span></div></section>
+<section class="card"><div class="roombar"><button id="new" class="btn">＋ 新增房間</button><span id="room" class="pill">尚未建立房間</span><span id="topPlayers" class="pill">👥 目前玩家：0 位</span><button id="copyLink" class="btn alt">🔗 複製玩家連結</button><button id="copyText" class="btn alt">📋 複製分享文字</button></div><div class="roombar roomActions"><button id="start" class="btn green">▶ 開始遊戲</button><button id="end" class="btn orange">■ 結束遊戲</button><button id="del" class="btn red">🗑 刪除房間</button><span id="adminStatus" class="statusClock">⏱️ 等待開始</span></div></section>
 
 <section class="card"><h2 class="sectionTitle">⚙️ 遊戲設定</h2><div class="settings">
 <div class="groupTitle">📚 題目</div>
@@ -33,9 +33,9 @@ button,input,select,textarea{font:inherit}
 <div class="field"><label>每題倒數</label><select id="questionSeconds"></select></div>
 <div class="field"><label>答題模式</label><select id="playMode"><option value="falling">🌠 飄落模式</option><option value="fixed">🔲 固定模式</option></select></div>
 <div class="field" id="fixedCountBox"><label>固定答案數</label><select id="fixedAnswerCount"><option value="4">4 個</option><option value="6">6 個</option></select></div>
-<div class="field" id="fallAnswerBox"><label>答案數量</label><select id="answerCount"><option>5</option><option selected>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></div></div>
-<div class="field" id="shapeBox"><label>答案形狀</label><select id="shape"><option value="star">⭐ 星星</option><option value="circle">● 圓形</option><option value="square">■ 方形</option><option value="diamond">◆ 菱形</option><option value="heart">♥ 愛心</option><option value="hex">⬡ 六邊形</option><option value="balloon">🎈 氣球</option><option value="cloud">☁ 雲朵</option><option value="mixed">🎲 綜合圖</option></select></div>
-<div class="field"><label>掉落／飄動速度</label><select id="fallSpeed"><option value="slow">慢</option><option value="medium" selected>中</option><option value="fast">快</option></select></div>
+<div class="field" id="fallAnswerBox"><label>答案數量</label><select id="answerCount"><option>5</option><option selected>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></div>
+<div class="field" id="shapeBox"><label>答案形狀</label><select id="shape"><option value="circle">● 圓形</option><option value="square">■ 方形</option><option value="diamond">◆ 菱形</option><option value="hex">⬡ 六邊形</option><option value="balloon">🎈 氣球</option><option value="cloud">☁ 雲朵</option><option value="mixed">🎲 綜合圖</option></select></div>
+<div class="field" id="speedBox"><label>掉落／飄動速度</label><select id="fallSpeed"><option value="slow">慢</option><option value="medium" selected>中</option><option value="fast">快</option></select></div>
 <div class="field"><label>遊戲背景</label><select id="bg"><option value="sky">🌤️ 藍天草地</option><option value="stars">🌌 星空夜晚</option><option value="forest">🌲 森林綠野</option><option value="ocean">🐠 海底世界</option><option value="candy">🍭 糖果樂園</option><option value="space">🚀 太空冒險</option></select></div>
 
 <div class="groupTitle">💰 計分</div>
@@ -66,12 +66,12 @@ function fillSubs(){const a=subs[$("category").value]||subs.random;$("subcategor
 for(let i=3;i<=30;i++)$("questionSeconds").insertAdjacentHTML("beforeend",`<option ${i===15?"selected":""}>${i}</option>`);
 function finishFields(){const m=$("finishMode").value;$("durationBox").classList.toggle("hidden",m!=="time");$("targetBox").classList.toggle("hidden",m==="time")}$("finishMode").onchange=finishFields;finishFields();
 function vals(){const o={};["category","subcategory","difficulty","playMode","fixedAnswerCount","questionSeconds","answerCount","shape","fallSpeed","bg","correctPoints","wrongPoints","timeoutPoints","wrongAction","startCountdown","autoStartPlayers","finishMode","duration","targetCorrect","startAt","note"].forEach(k=>o[k]=$(k).value);return o}
-function render(r){roomData=r;$("count").textContent=r.count+"人";$("topPlayers").textContent=`👥 目前玩家：${r.count} 位`;$("rank").innerHTML=r.ranking.map((p,i)=>`<tr><td>${i+1}</td><td>${p.name}</td><td>${p.correct}</td><td>${p.wrong}</td><td>${p.timeout}</td><td><b>${p.score}</b></td></tr>`).join("")}
+function render(r){roomData=r;if(r?.settings?.shape==="star"||r?.settings?.shape==="heart")r.settings.shape="circle";$("count").textContent=r.count+"人";$("topPlayers").textContent=`👥 目前玩家：${r.count} 位`;$("rank").innerHTML=r.ranking.map((p,i)=>`<tr><td>${i+1}</td><td>${p.name}</td><td>${p.correct}</td><td>${p.wrong}</td><td>${p.timeout}</td><td><b>${p.score}</b></td></tr>`).join("")}
 async function login(){const r=await fetch("/api/admin-login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({password:$("pw").value})}),j=await r.json();if(!j.ok){$("loginErr").textContent=j.message;return}adminToken=j.token;sessionStorage.setItem("eq_admin_token",adminToken);$("login").classList.add("hidden");toast("✅ 已登入主控台")}
 $("loginBtn").onclick=login;$("pw").onkeydown=e=>{if(e.key==="Enter")login()};if(adminToken)$("login").classList.add("hidden");
 $("new").onclick=()=>s.emit("admin:create",{adminToken},x=>{if(!x.ok)return toast("❌ "+x.msg);code=x.code;$("room").textContent="房號："+code;render(x.room);toast("✅ 房間已建立")});
 $("save").onclick=()=>{if(!code)return toast("⚠️ 請先新增房間");s.emit("admin:save",{code,settings:vals(),adminToken},x=>toast(x.ok?"✅ 設定已儲存":"❌ "+(x.msg||"儲存失敗")))};
-$("start").onclick=()=>{if(!code)return toast("⚠️ 請先新增房間");s.emit("admin:start",{code,adminToken},x=>toast(x.ok?`⏱️ 已開始 ${x.seconds} 秒同步倒數`:"❌ "+x.msg))};
+$("start").onclick=()=>{if(!code)return toast("⚠️ 請先新增房間");s.emit("admin:save",{code,settings:vals(),adminToken},sv=>{if(!sv?.ok)return toast("❌ "+(sv?.msg||"設定儲存失敗"));s.emit("admin:start",{code,adminToken},x=>toast(x.ok?`⏱️ 已開始 ${x.seconds} 秒同步倒數`:"❌ "+x.msg))})};
 $("end").onclick=()=>{if(!code)return toast("⚠️ 請先新增房間");s.emit("admin:end",{code,adminToken},x=>toast(x.ok?"⏹️ 遊戲已結束":"❌ "+x.msg))};
 $("del").onclick=()=>{if(code&&confirm("確定刪除房間？玩家及排行榜資料都會刪除。"))s.emit("admin:delete",{code,adminToken},x=>{if(x.ok){toast("🗑️ 房間已刪除");setTimeout(()=>location.reload(),450)}})};
 $("copyLink").onclick=async()=>{if(!code)return toast("⚠️ 請先新增房間");await navigator.clipboard.writeText(location.origin+"/?room="+code);toast("✅ 玩家連結已複製")};
@@ -101,15 +101,20 @@ function modeFields(){
 $("playMode").onchange=modeFields;modeFields();
 
 let adminTimer=setInterval(()=>{
-  if(!roomData)return;
-  const cd=$("adminCountdown"),gt=$("adminGameTime");
+  const st=$("adminStatus");
+  if(!roomData){st.textContent="⏱️ 等待開始";return}
   if(roomData.status==="countdown"&&roomData.countdownEndsAt){
     const left=Math.max(0,Math.ceil((roomData.countdownEndsAt-Date.now())/1000));
-    cd.classList.remove("hidden");cd.textContent=left>0?`⏱️ 開賽倒數 ${left} 秒`:"🚀 GO！";
-  }else cd.classList.add("hidden");
-  if(roomData.status==="playing"&&roomData.endsAt&&roomData.settings.finishMode==="time"){
+    st.textContent=left>0?`⏱️ 開賽倒數 ${left} 秒`:"🚀 GO！";
+  }else if(roomData.status==="playing"&&roomData.endsAt&&roomData.settings.finishMode==="time"){
     const sec=Math.max(0,Math.ceil((roomData.endsAt-Date.now())/1000));
-    gt.classList.remove("hidden");gt.textContent=`⏱️ 剩餘時間 ${Math.floor(sec/60)}:${String(sec%60).padStart(2,"0")}`;
-  }else gt.classList.add("hidden");
+    st.textContent=`⏱️ 剩餘時間 ${Math.floor(sec/60)}:${String(sec%60).padStart(2,"0")}`;
+  }else if(roomData.status==="playing"){
+    st.textContent="🎮 遊戲進行中";
+  }else if(roomData.status==="ended"){
+    st.textContent="🏁 已結束";
+  }else{
+    st.textContent="⏱️ 等待開始";
+  }
 },250);
 </script></body></html>

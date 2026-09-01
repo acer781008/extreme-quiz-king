@@ -29,20 +29,22 @@ button,input,select,textarea{font:inherit}
 .game[data-bg="space"]{background:radial-gradient(circle at 20% 25%,#b6a0ff55 0 65px,transparent 66px),radial-gradient(circle at 80% 70%,#7ae0ff33 0 90px,transparent 91px),linear-gradient(#101534,#38275d)}.game[data-bg="space"]:after{content:"🪐       ✨      🚀";position:absolute;left:4%;right:4%;bottom:7%;font-size:58px;opacity:.22}
 .question{position:relative;z-index:20;margin:10px;background:#fffffff2;color:#27314c;border-radius:15px;padding:12px;text-align:center;font-size:clamp(22px,4.5vw,34px);font-weight:950;box-shadow:0 4px 14px #0001}
 .hud{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:8px 0}.timerbox{position:relative;z-index:25;margin:0 10px 4px;height:13px;background:#ffffffa8;border-radius:999px;overflow:hidden;border:1px solid #ffffffb8}.timerbar{height:100%;width:100%;background:linear-gradient(90deg,#35c17a,#f5c04d);transition:width .2s linear}.timerbar.danger{background:linear-gradient(90deg,#f55,#ff9d5c)}
-.drop{position:absolute;z-index:15;width:116px;height:96px;min-width:116px;max-width:116px;min-height:96px;border:3px solid #fff;box-shadow:0 6px 16px #0002;font-weight:950;font-size:clamp(16px,3.5vw,21px);color:#27314c;cursor:pointer;padding:10px;overflow-wrap:anywhere;background:#ffd85f}
-.drop.long{width:150px;height:100px;min-width:150px;max-width:150px;min-height:100px;border-radius:18px}
-.drop[data-shape="star"]{clip-path:polygon(50% 0%,61% 34%,98% 35%,68% 56%,79% 92%,50% 71%,21% 92%,32% 56%,2% 35%,39% 34%);padding:24px 20px;min-height:112px;min-width:112px}
-.drop[data-shape="circle"]{border-radius:50%}
-.drop[data-shape="square"]{border-radius:9px}
-.drop[data-shape="diamond"]{clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);padding:20px}
-.drop[data-shape="heart"]{clip-path:polygon(50% 92%,8% 50%,5% 27%,18% 10%,38% 10%,50% 25%,62% 10%,82% 10%,95% 27%,92% 50%);background:#ffb8cf;padding:20px 13px}
-.drop[data-shape="hex"]{clip-path:polygon(25% 5%,75% 5%,100% 50%,75% 95%,25% 95%,0 50%);padding:16px}
-.drop[data-shape="balloon"]{border-radius:50% 50% 46% 46%;min-height:92px;background:#ffd36b;padding-bottom:18px}.drop[data-shape="balloon"]:after{content:"";position:absolute;left:50%;top:100%;width:2px;height:30px;background:#5c6478;transform:translateX(-50%)}
-.drop[data-shape="cloud"]{border-radius:999px;background:#fff;box-shadow:18px -10px 0 -5px #fff,-18px -7px 0 -7px #fff,0 6px 16px #0002}
+.drop{position:absolute;z-index:15;width:120px;height:96px;min-width:120px;max-width:120px;min-height:96px;max-height:96px;border:0;background:transparent;font-weight:950;font-size:20px;line-height:1.15;color:#27314c;cursor:pointer;padding:14px;overflow:hidden;overflow-wrap:anywhere;display:flex;align-items:center;justify-content:center;text-align:center;isolation:isolate;text-shadow:0 1px 0 #fff8}
+.drop::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--drop-color,#ffd85f);border:3px solid #fff;box-shadow:0 6px 16px #0002}
+.drop.long{width:120px;height:96px;min-width:120px;max-width:120px;min-height:96px;max-height:96px;font-size:16px;padding:12px}
+.drop[data-shape="circle"]::before{border-radius:50%}
+.drop[data-shape="square"]::before{border-radius:14px}
+
+.drop[data-shape="round"]::before{border-radius:28px}
+.drop[data-shape="diamond"]::before{clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}
+.drop[data-shape="hex"]::before{clip-path:polygon(18% 5%,82% 5%,100% 50%,82% 95%,18% 95%,0 50%)}
+.drop[data-shape="balloon"]::before{border-radius:50% 50% 44% 44%}
+.drop[data-shape="cloud"]::before{border-radius:999px}
+.drop.smallText{font-size:16px}
+.drop.tinyText{font-size:13px}
 .feedback{position:absolute;z-index:100;left:50%;top:47%;transform:translate(-50%,-50%) scale(.8);font-size:clamp(34px,8vw,68px);font-weight:1000;text-shadow:0 3px 8px #fff,0 4px 16px #0002;opacity:0;pointer-events:none}.feedback.show{animation:pop .65s ease}.feedback.good{color:#138b50}.feedback.bad{color:#d54355}.feedback.time{color:#e48b26}@keyframes pop{0%{opacity:0;transform:translate(-50%,-50%) scale(.6)}25%{opacity:1;transform:translate(-50%,-50%) scale(1.18)}75%{opacity:1}100%{opacity:0;transform:translate(-50%,-58%) scale(1)}}
 .overlay{position:absolute;inset:0;z-index:200;background:linear-gradient(145deg,#3f35a9e8,#6a50d9e8);color:white;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}.bigcount{font-size:clamp(72px,18vw,150px);font-weight:1000;line-height:1}.countlabel{font-size:20px;font-weight:850;margin-bottom:12px}
-@media(max-width:600px){.drop{width:104px;height:88px;min-width:104px;max-width:104px;min-height:88px}.drop.long{width:130px;min-width:130px;max-width:130px}.drop[data-shape="star"]{min-width:104px;min-height:96px}.waitgrid{grid-template-columns:1fr 1fr}.game{min-height:540px}.drop{max-width:120px;font-size:16px}.joinbox{margin:18px auto}}
-body:before{content:"⚡  ⭐  ❓  🎮  🏆  ABC  123";position:fixed;inset:0;pointer-events:none;z-index:-1;font-size:55px;line-height:3;letter-spacing:25px;opacity:.08;transform:rotate(-7deg)}.fixedAnswers{position:absolute;left:12px;right:12px;top:150px;bottom:20px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-content:center;padding:10px}.fixedAnswer{min-height:92px;border:3px solid #fff;border-radius:22px;box-shadow:0 8px 18px #0002;font-size:clamp(18px,4vw,25px);font-weight:950;color:#27314c;padding:14px;cursor:pointer;overflow-wrap:anywhere}.fixedAnswer:active{transform:scale(.97)}@media(max-width:600px){.fixedAnswers{gap:10px;top:140px}.fixedAnswer{min-height:78px}}</style></head><body>
+@media(max-width:600px){.drop{width:104px;height:88px;min-width:104px;max-width:104px;min-height:88px}.drop.long{width:130px;min-width:130px;max-width:130px}body:before{content:"⚡  ⭐  ❓  🎮  🏆  ABC  123";position:fixed;inset:0;pointer-events:none;z-index:-1;font-size:55px;line-height:3;letter-spacing:25px;opacity:.08;transform:rotate(-7deg)}.fixedAnswers{position:absolute;left:12px;right:12px;top:150px;bottom:20px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-content:center;padding:10px}.fixedAnswer{height:62px;min-height:62px;max-height:62px;border:3px solid #fff;border-radius:22px;box-shadow:0 8px 18px #0002;font-size:clamp(18px,4vw,25px);font-weight:950;color:#27314c;padding:14px;cursor:pointer;overflow-wrap:anywhere}.fixedAnswer:active{transform:scale(.97)}.fixedAnswers.six .fixedAnswer{height:56px;min-height:56px;max-height:56px}.fixedAnswers.six{gap:10px}@media(max-width:600px){.fixedAnswers{gap:10px;top:140px}.fixedAnswer{height:58px;min-height:58px;max-height:58px;padding:8px 10px;font-size:clamp(16px,4vw,21px)}}</style></head><body>
 <div id="modal" class="modal hidden"><div class="modalbox"><div id="modalBody"></div><button id="modalClose" class="btn" style="width:100%">關閉</button></div></div>
 <header class="top"><h1>⚡ 極速答題王</h1></header><main class="wrap player">
 <section id="join" class="card joinbox"><h2>🎮 加入遊戲</h2><p id="roomLabel" class="pill"></p><p class="muted">輸入玩家名稱，進入等待室。</p><input id="name" maxlength="20" placeholder="玩家名稱"><button id="joinBtn" class="btn" style="width:100%;margin-top:10px">加入遊戲</button><p id="joinMsg" style="font-weight:800"></p></section>
@@ -176,21 +178,21 @@ setInterval(()=>{if(room?.status==="playing"){let sec=room.endsAt?Math.max(0,Mat
 function showFeedback(kind,text){const f=$("feedback");f.className="feedback "+kind;f.textContent=text;void f.offsetWidth;f.classList.add("show")}
 function clearDrops(){spawnTimers.forEach(clearTimeout);spawnTimers=[];movers=[];document.querySelectorAll(".drop,.fixedAnswers").forEach(x=>x.remove())}
 function nextQ(){clearInterval(qInt);clearDrops();answered=false;current=getQ();if(!current){$("question").textContent="🎉 本場題目已全部完成";$("qTime").textContent="題庫完成";return}$("question").textContent=current[0];let fixed=room.settings.playMode==="fixed",n=fixed?(+room.settings.fixedAnswerCount||4):(+room.settings.answerCount||6);if(current[1].length>8)n=Math.min(n,4);else if(current[1].length>5)n=Math.min(n,6);let wrongs=shuffle(current[2]).slice(0,n-1),arr=shuffle([current[1],...wrongs]);if(fixed)renderFixed(arr,current[1]);else arr.forEach((t,i)=>spawn(t,t===current[1],n,Math.random()*900));let total=+room.settings.questionSeconds||15,left=total;$("qTime").textContent=`本題 ${left}秒`;$("timerbar").style.width="100%";$("timerbar").classList.remove("danger");qInt=setInterval(()=>{left=Math.max(0,left-0.2);let sec=Math.ceil(left);$("qTime").textContent=`本題 ${sec}秒`;$("timerbar").style.width=(left/total*100)+"%";$("timerbar").classList.toggle("danger",left<=5);if(left<=0){clearInterval(qInt);if(!answered){answered=true;clearDrops();showFeedback("time",`⏰ ${room.settings.timeoutPoints}`);s.emit("answer:result",{code,token,type:"timeout"},x=>{if(x?.ok){me=x.player;renderMe()}setTimeout(nextQ,700)})}}},200)}
-const shapeList=["star","circle","square","diamond","heart","hex","balloon","cloud"];
+const shapeList=["circle","square","round","diamond","hex","balloon","cloud"];
 function spawn(txt,correct,n,delay=0){let tm=setTimeout(()=>createDrop(txt,correct,n),delay);spawnTimers.push(tm)}
 const dropColors=["#ffd45e","#ff9fba","#8fe3ff","#9fe6a0","#cdb4ff","#ffbe7b","#87e6d0","#f7a8ff"];
 let movers=[];
 function renderFixed(arr,correctText){
- clearDrops();let box=document.createElement("div");box.className="fixedAnswers";box.id="fixedAnswers";
+ clearDrops();let box=document.createElement("div");box.className="fixedAnswers"+(arr.length===6?" six":"");box.id="fixedAnswers";
  arr.forEach((txt,i)=>{let b=document.createElement("button");b.className="fixedAnswer";b.style.background=dropColors[i%dropColors.length];b.textContent=txt;b.onclick=()=>handleAnswer(b,txt===correctText);box.appendChild(b)});
  $("game").appendChild(box);
 }
 function createDrop(txt,correct,n){
  if(answered||room?.status!=="playing")return;
- let d=document.createElement("button"),shape=room.settings.shape||"star";
+ let d=document.createElement("button"),shape=room.settings.shape||"circle";if(shape==="star"||shape==="heart")shape="circle";
  if(shape==="mixed")shape=shapeList[Math.floor(Math.random()*shapeList.length)];
- d.className="drop"+(txt.length>8?" long":"");d.dataset.shape=shape;d.textContent=txt;
- d.style.background=dropColors[Math.floor(Math.random()*dropColors.length)];
+ d.className="drop";if(txt.length>12)d.classList.add("tinyText");else if(txt.length>7)d.classList.add("smallText");d.dataset.shape=shape;d.textContent=txt;
+ d.style.setProperty("--drop-color",dropColors[Math.floor(Math.random()*dropColors.length)]);
  $("game").appendChild(d);
  const g=$("game"),W=Math.max(40,g.clientWidth-d.offsetWidth),H=Math.max(80,g.clientHeight-d.offsetHeight-25);
  let tries=0,x,y;
