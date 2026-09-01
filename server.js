@@ -18,7 +18,7 @@ const makeRoom=()=>({
     questionSeconds:15,answerCount:6,wrongAction:"continue",
     correctPoints:10,wrongPoints:-5,timeoutPoints:-5,
     finishMode:"time",duration:10,targetCorrect:20,
-    startCountdown:10,bg:"sky",shape:"star",note:"",startAt:""
+    startCountdown:10,autoStartPlayers:0,bg:"sky",shape:"star",note:"",startAt:""
   }
 });
 const ranking=r=>Object.values(r.players).map(p=>({
@@ -34,6 +34,14 @@ const endRoom=code=>{
   r.status="ended";r.countdownEndsAt=null;emitRoom(code);
   io.to(code).emit("game:ended",{ranking:ranking(r)});
 };
+
+function beginCountdown(code,r){
+  if(!r||r.status!=="waiting")return false;
+  const sec=Math.max(10,Math.min(60,+r.settings.startCountdown||10));
+  r.status="countdown";r.countdownEndsAt=Date.now()+sec*1000;emitRoom(code);
+  io.to(code).emit("game:countdown",{endsAt:r.countdownEndsAt,seconds:sec});
+  return sec;
+}
 
 setInterval(()=>{
   for(const [code,r] of rooms){
@@ -67,9 +75,7 @@ io.on("connection",socket=>{
     if(!isAdmin(d))return cb?.({ok:false,msg:"主控未登入"});
     const r=rooms.get(String(d.code||""));if(!r)return cb?.({ok:false,msg:"找不到房間"});
     if(r.status!=="waiting")return cb?.({ok:false,msg:"目前無法開始"});
-    const sec=Math.max(10,Math.min(60,+r.settings.startCountdown||10));
-    r.status="countdown";r.countdownEndsAt=Date.now()+sec*1000;emitRoom(d.code);
-    io.to(d.code).emit("game:countdown",{endsAt:r.countdownEndsAt,seconds:sec});
+    const sec=beginCountdown(d.code,r);
     cb?.({ok:true,seconds:sec});
   });
 
@@ -91,6 +97,8 @@ io.on("connection",socket=>{
     const token=crypto.randomBytes(16).toString("hex");
     p=r.players[token]={token,name,score:0,correct:0,wrong:0,timeout:0,socket:socket.id};
     socket.join(code);emitRoom(code);cb?.({ok:true,token,room:publicRoom(r),player:p});
+    const need=+r.settings.autoStartPlayers||0;
+    if(need>0&&Object.keys(r.players).length>=need&&r.status==="waiting")beginCountdown(code,r);
   });
 
   socket.on("answer:result",(d,cb)=>{
