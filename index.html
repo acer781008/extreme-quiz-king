@@ -44,7 +44,20 @@ button,input,select,textarea{font:inherit}
 .drop.tinyText{font-size:13px}
 .feedback{position:absolute;z-index:100;left:50%;top:47%;transform:translate(-50%,-50%) scale(.8);font-size:clamp(34px,8vw,68px);font-weight:1000;text-shadow:0 3px 8px #fff,0 4px 16px #0002;opacity:0;pointer-events:none}.feedback.show{animation:pop .65s ease}.feedback.good{color:#138b50}.feedback.bad{color:#d54355}.feedback.time{color:#e48b26}@keyframes pop{0%{opacity:0;transform:translate(-50%,-50%) scale(.6)}25%{opacity:1;transform:translate(-50%,-50%) scale(1.18)}75%{opacity:1}100%{opacity:0;transform:translate(-50%,-58%) scale(1)}}
 .overlay{position:absolute;inset:0;z-index:200;background:linear-gradient(145deg,#3f35a9e8,#6a50d9e8);color:white;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}.bigcount{font-size:clamp(72px,18vw,150px);font-weight:1000;line-height:1}.countlabel{font-size:20px;font-weight:850;margin-bottom:12px}
-@media(max-width:600px){.drop{width:104px;height:88px;min-width:104px;max-width:104px;min-height:88px}.drop.long{width:130px;min-width:130px;max-width:130px}body:before{content:"⚡  ⭐  ❓  🎮  🏆  ABC  123";position:fixed;inset:0;pointer-events:none;z-index:-1;font-size:55px;line-height:3;letter-spacing:25px;opacity:.08;transform:rotate(-7deg)}.fixedAnswers{position:absolute;left:12px;right:12px;top:150px;bottom:20px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-content:center;padding:10px}.fixedAnswer{height:62px;min-height:62px;max-height:62px;border:3px solid #fff;border-radius:22px;box-shadow:0 8px 18px #0002;font-size:clamp(18px,4vw,25px);font-weight:950;color:#27314c;padding:14px;cursor:pointer;overflow-wrap:anywhere}.fixedAnswer:active{transform:scale(.97)}.fixedAnswers.six .fixedAnswer{height:56px;min-height:56px;max-height:56px}.fixedAnswers.six{gap:10px}@media(max-width:600px){.fixedAnswers{gap:10px;top:140px}.fixedAnswer{height:58px;min-height:58px;max-height:58px;padding:8px 10px;font-size:clamp(16px,4vw,21px)}}</style></head><body>
+@media(max-width:600px){.drop{width:104px;height:88px;min-width:104px;max-width:104px;min-height:88px}.drop.long{width:130px;min-width:130px;max-width:130px}body:before{content:"⚡  ⭐  ❓  🎮  🏆  ABC  123";position:fixed;inset:0;pointer-events:none;z-index:-1;font-size:55px;line-height:3;letter-spacing:25px;opacity:.08;transform:rotate(-7deg)}.fixedAnswers{position:absolute;left:12px;right:12px;top:150px;bottom:20px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-content:center;padding:10px}.fixedAnswer{height:62px;min-height:62px;max-height:62px;border:3px solid #fff;border-radius:22px;box-shadow:0 8px 18px #0002;font-size:clamp(18px,4vw,25px);font-weight:950;color:#27314c;padding:14px;cursor:pointer;overflow-wrap:anywhere}.fixedAnswer:active{transform:scale(.97)}.fixedAnswers.six .fixedAnswer{height:56px;min-height:56px;max-height:56px}.fixedAnswers.six{gap:10px}@media(max-width:600px){.fixedAnswers{gap:10px;top:140px}.fixedAnswer{height:58px;min-height:58px;max-height:58px;padding:8px 10px;font-size:clamp(16px,4vw,21px)}}
+/* V1.7 mobile/gameplay layout fixes */
+.hud{position:relative;z-index:60}
+.question{z-index:50!important;min-height:72px;display:flex;align-items:center;justify-content:center;overflow:visible!important}
+.timerbar{z-index:48!important}
+.drop{z-index:20}
+.endOverlay{position:absolute;inset:0;z-index:200;background:#ffffffee;display:flex;align-items:center;justify-content:center;padding:24px;text-align:center}
+.endCard{width:min(520px,92%);background:white;border-radius:28px;padding:28px 20px;box-shadow:0 18px 50px #0003;border:4px solid #8bd5ff}
+.endTitle{font-size:clamp(32px,8vw,54px);font-weight:1000;margin-bottom:14px}
+.endStats{font-size:18px;font-weight:850;line-height:1.8}
+@media(max-width:600px){
+ .question{left:12px!important;right:12px!important;top:12px!important;min-height:68px!important;padding:10px!important}
+}
+</style></head><body>
 <div id="modal" class="modal hidden"><div class="modalbox"><div id="modalBody"></div><button id="modalClose" class="btn" style="width:100%">關閉</button></div></div>
 <header class="top"><h1>⚡ 極速答題王</h1></header><main class="wrap player">
 <section id="join" class="card joinbox"><h2>🎮 加入遊戲</h2><p id="roomLabel" class="pill"></p><p class="muted">輸入玩家名稱，進入等待室。</p><input id="name" maxlength="20" placeholder="玩家名稱"><button id="joinBtn" class="btn" style="width:100%;margin-top:10px">加入遊戲</button><p id="joinMsg" style="font-weight:800"></p></section>
@@ -167,6 +180,7 @@ function join(){let name=$("name").value.trim();if(!token&&!name){$("joinMsg").t
 $("joinBtn").onclick=join;$("name").onkeydown=e=>{if(e.key==="Enter")join()};if(token)join();
 function waitUI(){$("wait").classList.remove("hidden");updateWait()}
 function updateWait(){if(!room||!me)return;$("wName").textContent="👤 "+me.name;$("wCount").textContent="👥 目前 "+room.count+" 人";$("wCat").textContent="📚 "+(catName[room.settings.category]||"題庫");$("wDiff").textContent="🎯 "+(diffName[room.settings.difficulty]||"普通");$("wFinish").textContent="🏁 "+(room.settings.finishMode==="time"?"時間到結束":room.settings.finishMode==="target"?"指定答對題數":"第一位完成");$("wTime").textContent=room.settings.finishMode==="time"?`⏱️ ${room.settings.duration}分鐘`:`✅ ${room.settings.targetCorrect}題`;$("wNote").textContent=room.settings.note?"📝 "+room.settings.note:""}
+s.on("game:end",()=>{if(room)room.status="ended";showGameEnd()});
 s.on("room:update",r=>{room=r;if(me){let p=r.ranking.find(x=>x.name===me.name);if(p)me={...me,...p};updateWait();renderMe()}});
 s.on("game:countdown",x=>showCountdown(x.endsAt));
 function showCountdown(endsAt){clearInterval(countInt);$("join").classList.add("hidden");$("wait").classList.add("hidden");$("play").classList.remove("hidden");$("game").dataset.bg=room?.settings?.bg||"sky";$("countdown").classList.remove("hidden");function tick(){let left=Math.max(0,Math.ceil((endsAt-Date.now())/1000));$("bigcount").textContent=left>0?left:"GO！";if(left<=0){clearInterval(countInt);setTimeout(()=>$("countdown").classList.add("hidden"),700)}}tick();countInt=setInterval(tick,250)}
@@ -176,59 +190,86 @@ function startUI(){exhausted=false;$("join").classList.add("hidden");$("wait").c
 function renderMe(){if(!room||!me)return;let i=room.ranking.findIndex(x=>x.name===me.name);$("myRank").textContent="🏆 第"+(i+1)+"名";$("score").textContent="⭐ "+me.score+"分";$("stats").textContent=`答對${me.correct}｜答錯${me.wrong}｜未作答${me.timeout}`}
 setInterval(()=>{if(room?.status==="playing"){let sec=room.endsAt?Math.max(0,Math.ceil((room.endsAt-Date.now())/1000)):0;$("gameTime").textContent=room.endsAt?`比賽 ${Math.floor(sec/60)}:${String(sec%60).padStart(2,"0")}`:"比賽進行中"}},500);
 function showFeedback(kind,text){const f=$("feedback");f.className="feedback "+kind;f.textContent=text;void f.offsetWidth;f.classList.add("show")}
-function clearDrops(){spawnTimers.forEach(clearTimeout);spawnTimers=[];movers=[];document.querySelectorAll(".drop,.fixedAnswers").forEach(x=>x.remove())}
+function clearDrops(){spawnTimers.forEach(clearTimeout);spawnTimers=[];respawnTimers.forEach(clearTimeout);respawnTimers=[];movers=[];document.querySelectorAll(".drop,.fixedAnswers").forEach(x=>x.remove())}
 function nextQ(){clearInterval(qInt);clearDrops();answered=false;current=getQ();if(!current){$("question").textContent="🎉 本場題目已全部完成";$("qTime").textContent="題庫完成";return}$("question").textContent=current[0];let fixed=room.settings.playMode==="fixed",n=fixed?(+room.settings.fixedAnswerCount||4):(+room.settings.answerCount||6);if(current[1].length>8)n=Math.min(n,4);else if(current[1].length>5)n=Math.min(n,6);let wrongs=shuffle(current[2]).slice(0,n-1),arr=shuffle([current[1],...wrongs]);if(fixed)renderFixed(arr,current[1]);else arr.forEach((t,i)=>spawn(t,t===current[1],n,Math.random()*900));let total=+room.settings.questionSeconds||15,left=total;$("qTime").textContent=`本題 ${left}秒`;$("timerbar").style.width="100%";$("timerbar").classList.remove("danger");qInt=setInterval(()=>{left=Math.max(0,left-0.2);let sec=Math.ceil(left);$("qTime").textContent=`本題 ${sec}秒`;$("timerbar").style.width=(left/total*100)+"%";$("timerbar").classList.toggle("danger",left<=5);if(left<=0){clearInterval(qInt);if(!answered){answered=true;clearDrops();showFeedback("time",`⏰ ${room.settings.timeoutPoints}`);s.emit("answer:result",{code,token,type:"timeout"},x=>{if(x?.ok){me=x.player;renderMe()}setTimeout(nextQ,700)})}}},200)}
 const shapeList=["circle","square","round","diamond","hex","balloon","cloud"];
 function spawn(txt,correct,n,delay=0){let tm=setTimeout(()=>createDrop(txt,correct,n),delay);spawnTimers.push(tm)}
 const dropColors=["#ffd45e","#ff9fba","#8fe3ff","#9fe6a0","#cdb4ff","#ffbe7b","#87e6d0","#f7a8ff"];
-let movers=[];
+let movers=[],respawnTimers=[];
 function renderFixed(arr,correctText){
  clearDrops();let box=document.createElement("div");box.className="fixedAnswers"+(arr.length===6?" six":"");box.id="fixedAnswers";
  arr.forEach((txt,i)=>{let b=document.createElement("button");b.className="fixedAnswer";b.style.background=dropColors[i%dropColors.length];b.textContent=txt;b.onclick=()=>handleAnswer(b,txt===correctText);box.appendChild(b)});
  $("game").appendChild(box);
 }
+function spawn(txt,correct,n,delay=0){
+ let t=setTimeout(()=>createDrop(txt,correct,n),delay);spawnTimers.push(t);
+}
 function createDrop(txt,correct,n){
- if(answered||room?.status!=="playing")return;
+ if(answered||room?.status!=="playing"||room.settings.playMode==="fixed")return;
  let d=document.createElement("button"),shape=room.settings.shape||"circle";if(shape==="star"||shape==="heart")shape="circle";
  if(shape==="mixed")shape=shapeList[Math.floor(Math.random()*shapeList.length)];
  d.className="drop";if(txt.length>12)d.classList.add("tinyText");else if(txt.length>7)d.classList.add("smallText");d.dataset.shape=shape;d.textContent=txt;
  d.style.setProperty("--drop-color",dropColors[Math.floor(Math.random()*dropColors.length)]);
  $("game").appendChild(d);
- const g=$("game"),W=Math.max(40,g.clientWidth-d.offsetWidth),H=Math.max(80,g.clientHeight-d.offsetHeight-25);
- let tries=0,x,y;
- do{x=Math.random()*W;y=145+Math.random()*Math.max(30,H-145);tries++}
- while(tries<30&&movers.some(m=>Math.abs(m.x-x)<125&&Math.abs(m.y-y)<100));
- let sp=room.settings.fallSpeed==="fast"?1.9:room.settings.fallSpeed==="slow"?0.85:1.3;
- let m={el:d,x,y,vx:(Math.random()-.5)*2.3*sp,vy:(.65+Math.random()*.8)*sp,w:d.offsetWidth,h:d.offsetHeight,correct};
+ const g=$("game"),W=Math.max(10,g.clientWidth-d.offsetWidth);
+ // Always start just below the question/timer area, never in the middle/bottom.
+ let spawnY=Math.min(175,Math.max(125,Math.round(g.clientHeight*.17)));
+ let tries=0,x;
+ do{x=Math.random()*W;tries++}
+ while(tries<30&&movers.some(m=>Math.abs(m.x-x)<125&&Math.abs(m.y-spawnY)<92));
+ let sp=room.settings.fallSpeed==="fast"?2.0:room.settings.fallSpeed==="slow"?0.9:1.35;
+ let m={el:d,x,y:spawnY-Math.random()*18,vx:(Math.random()-.5)*1.25*sp,vy:(.8+Math.random()*.65)*sp,w:d.offsetWidth,h:d.offsetHeight,correct,txt,n};
  movers.push(m);d.onclick=()=>handleAnswer(d,correct);
  if(!window._physicsRAF)physics();
+}
+function scheduleReplacement(m){
+ if(answered||room?.status!=="playing"||room.settings.playMode==="fixed")return;
+ let t=setTimeout(()=>createDrop(m.txt,m.correct,m.n),220+Math.random()*500);respawnTimers.push(t);
 }
 function handleAnswer(el,correct){
  if(answered)return;
  if(correct){answered=true;clearInterval(qInt);clearDrops();showFeedback("ok",`✅ +${room.settings.correctPoints}`);s.emit("answer:result",{code,token,type:"correct"},x=>{if(x?.ok){me=x.player;renderMe()}setTimeout(nextQ,650)})}
- else{showFeedback("bad",`💥 ${room.settings.wrongPoints}`);s.emit("answer:result",{code,token,type:"wrong"},x=>{if(x?.ok){me=x.player;renderMe()}});if(room.settings.wrongAction==="next"){answered=true;clearInterval(qInt);clearDrops();setTimeout(nextQ,650)}else{if(el.classList.contains("fixedAnswer"))el.disabled=true;else{movers=movers.filter(m=>m.el!==el);el.remove()}}}
+ else{showFeedback("bad",`💥 ${room.settings.wrongPoints}`);s.emit("answer:result",{code,token,type:"wrong"},x=>{if(x?.ok){me=x.player;renderMe()}});if(room.settings.wrongAction==="next"){answered=true;clearInterval(qInt);clearDrops();setTimeout(nextQ,650)}else{if(el.classList.contains("fixedAnswer"))el.disabled=true;else{let m=movers.find(m=>m.el===el);movers=movers.filter(x=>x.el!==el);el.remove();if(m)scheduleReplacement(m)}}}
 }
 function physics(){
  window._physicsRAF=requestAnimationFrame(physics);
  const g=$("game");if(!g||room?.status!=="playing")return;
  const W=g.clientWidth,H=g.clientHeight;
- for(let i=0;i<movers.length;i++){
-   let a=movers[i];if(!a.el.isConnected)continue;
+ for(let i=movers.length-1;i>=0;i--){
+   let a=movers[i];if(!a.el.isConnected){movers.splice(i,1);continue}
    a.x+=a.vx;a.y+=a.vy;
+   // Side walls bounce. Bottom does NOT bounce: it disappears and returns from the top.
    if(a.x<=0){a.x=0;a.vx=Math.abs(a.vx)}
    if(a.x+a.w>=W){a.x=W-a.w;a.vx=-Math.abs(a.vx)}
-   if(a.y<=135){a.y=135;a.vy=Math.abs(a.vy)}
-   if(a.y+a.h>=H){a.y=H-a.h;a.vy=-Math.abs(a.vy)}
-   for(let j=i+1;j<movers.length;j++){
-     let b=movers[j],dx=(a.x+a.w/2)-(b.x+b.w/2),dy=(a.y+a.h/2)-(b.y+b.h/2);
+   if(a.y+a.h>=H-4){
+      movers.splice(i,1);a.el.remove();scheduleReplacement(a);continue;
+   }
+   // Collision separation + bounce.
+   for(let j=i-1;j>=0;j--){
+     let b=movers[j];if(!b||!b.el.isConnected)continue;
+     let dx=(a.x+a.w/2)-(b.x+b.w/2),dy=(a.y+a.h/2)-(b.y+b.h/2);
      let ox=(a.w+b.w)/2-Math.abs(dx),oy=(a.h+b.h)/2-Math.abs(dy);
      if(ox>0&&oy>0){
-       if(ox<oy){let push=ox/2+1,s=dx>=0?1:-1;a.x+=push*s;b.x-=push*s;[a.vx,b.vx]=[b.vx,a.vx];a.vx+=.25*s;b.vx-=.25*s}
-       else{let push=oy/2+1,s=dy>=0?1:-1;a.y+=push*s;b.y-=push*s;[a.vy,b.vy]=[b.vy,a.vy];a.vy+=.2*s;b.vy-=.2*s}
+       if(ox<oy){let push=ox/2+1,sn=dx>=0?1:-1;a.x+=push*sn;b.x-=push*sn;[a.vx,b.vx]=[b.vx,a.vx];a.vx+=.18*sn;b.vx-=.18*sn}
+       else{let push=oy/2+1,sn=dy>=0?1:-1;a.y+=push*sn;b.y-=push*sn;[a.vy,b.vy]=[Math.max(.55,b.vy),Math.max(.55,a.vy)]}
      }
    }
    a.el.style.transform=`translate(${a.x}px,${a.y}px)`;
  }
 }
+function showGameEnd(){
+ answered=true;clearInterval(qInt);clearDrops();
+ if($("gameEndOverlay"))return;
+ let ov=document.createElement("div");ov.className="endOverlay";ov.id="gameEndOverlay";
+ let rank=room?.ranking?.findIndex?.(x=>x.name===me?.name);rank=rank>=0?rank+1:"-";
+ ov.innerHTML=`<div class="endCard"><div class="endTitle">🏁 遊戲結束！</div><div class="endStats">🏆 最終排名：第 ${rank} 名<br>答對 ${me?.correct||0}　答錯 ${me?.wrong||0}　未作答 ${me?.timeout||0}<br>⭐ ${me?.score||0} 分</div><button class="btn" onclick="document.getElementById('gameEndOverlay').remove();document.getElementById('rankPanel').classList.remove('hidden')">🏆 查看最終排行榜</button></div>`;
+ $("game").appendChild(ov);
+}
 $("showRank").onclick=()=>room&&alert(room.ranking.map((p,i)=>`第${i+1}名｜${p.name}｜${p.score}分`).join("\\n"));
+
+setInterval(()=>{
+ if(room?.status==="playing"&&room?.endsAt&&Date.now()>=room.endsAt){
+   room.status="ended";showGameEnd();
+ }
+},250);
 </script></body></html>
