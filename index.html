@@ -277,7 +277,16 @@ function nextQ(){
 function beginAnswerPhase(setup){
   if(answered||room?.status!=="playing")return;
   if(setup.fixed)renderFixed(setup.arr,current[1]);
-  else setup.arr.forEach((t,i)=>spawn(t,t===current[1],setup.n,i*150+Math.random()*180));
+  else{
+    // 答案改為「不同時間陸續掉落」：
+    // 第一顆很快出現，後面每顆再隨機間隔 0.4～1.2 秒，
+    // 使用累積延遲，避免看起來像整排一起掉。
+    let delay=120+Math.random()*220;
+    setup.arr.forEach((t,i)=>{
+      if(i>0)delay+=400+Math.random()*800;
+      spawn(t,t===current[1],setup.n,delay);
+    });
+  }
   let total=+room.settings.questionSeconds||15,left=total;
   $("qTime").textContent=`⏱️ 作答 ${Math.ceil(left)}秒`;$("timerbar").style.width="100%";$("timerbar").classList.remove("danger");
   qInt=setInterval(()=>{
@@ -333,6 +342,13 @@ function chooseSpawnX(width){
 }
 function createDrop(txt,correct,n){
   if(answered||room?.status!=="playing"||room.settings.playMode==="fixed")return;
+  const top=fallTop();
+  // 上緣還很擠時稍微再等一下，避免兩顆答案像同時成排出現。
+  if(movers.some(m=>m.y<top+55)){
+    let t=setTimeout(()=>createDrop(txt,correct,n),180+Math.random()*260);
+    respawnTimers.push(t);
+    return;
+  }
   let d=document.createElement("button"),shape=room.settings.shape||"circle";
   if(shape==="star"||shape==="heart")shape="circle";
   if(shape==="mixed")shape=shapeList[Math.floor(Math.random()*shapeList.length)];
@@ -356,7 +372,7 @@ function createDrop(txt,correct,n){
 }
 function scheduleReplacement(m){
   if(answered||room?.status!=="playing"||room.settings.playMode==="fixed")return;
-  let t=setTimeout(()=>createDrop(m.txt,m.correct,m.n),180+Math.random()*420);respawnTimers.push(t)
+  let t=setTimeout(()=>createDrop(m.txt,m.correct,m.n),400+Math.random()*800);respawnTimers.push(t)
 }
 function handleAnswer(el,correct){
   if(answered||room?.status!=="playing")return;

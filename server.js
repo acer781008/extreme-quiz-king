@@ -114,4 +114,4 @@ io.on("connection",socket=>{
   });
 });
 app.get("/admin",(req,res)=>res.sendFile(path.join(__dirname,"admin.html")));
-server.listen(process.env.PORT||3000,()=>console.log("極速答題王 V1.8 running"));
+server.listen(process.env.PORT||3000,()=>console.log("極速答題王 V1.9 running"));
