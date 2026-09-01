@@ -22,7 +22,14 @@ function finish(code){const r=rooms.get(code); if(!r||r.status==="ended")return;
 setInterval(()=>{const now=Date.now(); for(const [c,r] of rooms) if(r.status==="playing"&&r.endsAt&&now>=r.endsAt) finish(c)},500);
 io.on("connection",s=>{
  const isAdmin=data=>!!(data&&adminTokens.has(data.adminToken));
- s.on("admin:create",(data,cb)=>{if(!isAdmin(data))return cb?.({ok:false,msg:"主控未登入"});{let c;do{c=String(Math.floor(100000+Math.random()*900000))}while(rooms.has(c));rooms.set(c,def());s.join(c);cb?.({ok:true,code:c,room:publicRoom(rooms.get(c))})});
+ s.on("admin:create",(data,cb)=>{
+  if(!isAdmin(data)) return cb?.({ok:false,msg:"主控未登入"});
+  let c;
+  do{ c=String(Math.floor(100000+Math.random()*900000)); }while(rooms.has(c));
+  rooms.set(c,def());
+  s.join(c);
+  cb?.({ok:true,code:c,room:publicRoom(rooms.get(c))});
+ });
  s.on("admin:join",(data,cb)=>{if(!isAdmin(data))return cb?.({ok:false,msg:"主控未登入"});const {code}=data;const r=rooms.get(code);if(!r)return cb?.({ok:false});s.join(code);cb?.({ok:true,room:publicRoom(r)})});
  s.on("admin:save",(data,cb)=>{if(!isAdmin(data))return cb?.({ok:false,msg:"主控未登入"});const {code,settings}=data;const r=rooms.get(code);if(!r||r.status==="playing")return cb?.({ok:false});r.settings={...r.settings,...settings};emitRoom(code);cb?.({ok:true})});
  s.on("admin:start",(data,cb)=>{if(!isAdmin(data))return cb?.({ok:false,msg:"主控未登入"});const {code}=data;const r=rooms.get(code);if(!r||r.status!=="waiting")return cb?.({ok:false});r.status="countdown";emitRoom(code);io.to(code).emit("game:countdown",{seconds:3});setTimeout(()=>{if(!rooms.has(code))return;r.status="playing";r.startedAt=Date.now();r.endsAt=r.settings.finishMode==="time"?r.startedAt+r.settings.duration*60000:null;emitRoom(code);io.to(code).emit("game:start",publicRoom(r));},3000);cb?.({ok:true})});
