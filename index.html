@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>掉落點答案 V0.3</title>
+<style>
+:root{--ink:#24324a;--line:#cfe0ee;--accent:#5c63f2;--ok:#238b57;--bad:#db4d5c}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,"Segoe UI","Noto Sans TC",sans-serif;color:var(--ink);background:linear-gradient(#dff6ff,#fff5d5);min-height:100vh}
+.wrap{max-width:1080px;margin:auto;padding:16px}.head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.head h1{margin:0;font-size:clamp(25px,4vw,40px)}.tag{background:#fff;padding:8px 12px;border-radius:999px;border:1px solid var(--line);font-weight:900}
+.layout{display:grid;grid-template-columns:315px 1fr;gap:15px;margin-top:15px}.card{background:#ffffffed;border:1px solid var(--line);border-radius:22px;padding:15px;box-shadow:0 10px 25px #56789118}
+h2{margin:0 0 10px}label{display:block;font-size:14px;font-weight:800;margin:10px 0 5px}select,input,button{width:100%;min-height:44px;border:1px solid var(--line);border-radius:13px;padding:9px 11px;font-size:16px;background:#fff;color:var(--ink)}
+button{cursor:pointer;font-weight:900}.start{margin-top:14px;background:var(--accent);color:#fff;border:0}.custom{display:none;margin-top:6px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px}.stat{text-align:center;background:#f4f8fb;padding:9px;border-radius:13px}.stat small{display:block;color:#718096}.stat b{font-size:21px}
+.gamebar{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}.timer{background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 12px;font-weight:900}.question{margin:8px 0 10px;background:#fff8df;border:1px solid #efdca5;border-radius:17px;padding:12px;text-align:center;font-size:clamp(29px,5vw,47px);font-weight:1000}
+.field{height:460px;position:relative;overflow:hidden;border:2px solid #b6d8eb;border-radius:22px;background:radial-gradient(circle at 20% 10%,#fff 0 34px,transparent 35px),radial-gradient(circle at 78% 16%,#fff 0 42px,transparent 43px),linear-gradient(#73caff 0 80%,#89d179 80%)}
+.hint{position:absolute;z-index:4;top:9px;left:0;right:0;text-align:center;font-weight:900;color:#28597d}.drop{position:absolute;width:92px;height:62px;border:0;background:transparent;font-size:20px;font-weight:1000;filter:drop-shadow(0 4px 3px #0002);touch-action:manipulation}
+.boom{animation:boom .28s ease forwards;pointer-events:none}@keyframes boom{0%{transform:scale(1);opacity:1}55%{transform:scale(1.65) rotate(12deg);opacity:.8}100%{transform:scale(.1) rotate(-20deg);opacity:0}}
+.status{min-height:30px;text-align:center;font-weight:900;padding-top:6px}.ok{color:var(--ok)}.bad{color:var(--bad)}.note{font-size:12px;line-height:1.55;color:#718096;margin-top:10px}
+@media(max-width:790px){.layout{grid-template-columns:1fr}.settings{order:2}.game{order:1}.field{height:420px}}
+</style></head>
+<body><div class="wrap">
+<div class="head"><h1>⭐🎈 掉落點答案</h1><div class="tag">單機測試版 V0.3</div></div>
+<div class="layout">
+<section class="card settings"><h2>遊戲設定</h2>
+<label>掉落速度</label><select id="speed"><option value=".7">慢</option><option value="1.05" selected>中</option><option value="1.5">快</option></select>
+<label>題目難度</label><select id="difficulty"><option value="easy">簡單</option><option value="normal" selected>普通</option><option value="hard">困難</option></select>
+<label>題目倒數（3～30秒）</label><select id="countdown"></select>
+<label>題型</label><select id="type"><option value="mix">＋－×÷ 混合</option><option value="add">加法</option><option value="sub">減法</option><option value="mul">乘法</option><option value="div">除法</option></select>
+<label>同時掉落答案數</label><select id="choices"><option>5</option><option selected>6</option><option>7</option><option>8</option></select>
+<label>答錯後</label><select id="wrongAction"><option value="continue" selected>繼續本題</option><option value="next">立即換下一題</option></select>
+<label>每答錯 1 次扣分</label><select id="penalty"><option value="0">不扣分</option><option value="5" selected>-5 分</option><option value="10">-10 分</option><option value="custom">自訂</option></select>
+<input id="customPenalty" class="custom" type="number" min="0" max="999" value="3" placeholder="輸入扣分">
+<button id="start" class="start">開始 / 重新開始</button>
+<div class="stats"><div class="stat"><small>分數</small><b id="score">0</b></div><div class="stat"><small>答對</small><b id="correct">0</b></div><div class="stat"><small>答錯</small><b id="wrong">0</b></div></div>
+<div class="note">答錯會爆掉並依設定扣分。若選「繼續本題」，倒數不中斷；答案掉完會持續補新答案，直到答對或倒數歸零。</div>
+</section>
+<section class="card game"><div class="gamebar"><h2>目前題目</h2><div class="timer">⏳ <span id="timer">10</span> 秒</div></div>
+<div id="question" class="question">按「開始」出題</div><div id="field" class="field"><div class="hint">直接點擊正確答案！</div></div><div id="status" class="status"></div></section>
+</div></div>
+<script>
+(()=>{const $=id=>document.getElementById(id),field=$('field'),status=$('status'),cd=$('countdown');
+for(let i=3;i<=30;i++){let o=document.createElement('option');o.value=i;o.textContent=i+' 秒';if(i===10)o.selected=true;cd.appendChild(o)}
+$('penalty').onchange=()=>{$('customPenalty').style.display=$('penalty').value==='custom'?'block':'none'};
+let running=false,score=0,correct=0,wrong=0,answer=0,timeLeft=10,timerId=null,raf=null,drops=[],locked=false,last=0,batch=0;
+const rnd=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+function stats(){$('score').textContent=score;$('correct').textContent=correct;$('wrong').textContent=wrong}
+function penalty(){return $('penalty').value==='custom'?Math.max(0,+$('customPenalty').value||0):+$('penalty').value}
+function question(){const d=$('difficulty').value,t=$('type').value,max=d==='easy'?10:d==='normal'?30:80,ops=t==='mix'?['add','sub','mul','div']:[t],op=ops[rnd(0,ops.length-1)];let a,b,s;if(op==='add'){a=rnd(1,max);b=rnd(1,max);answer=a+b;s='+'}if(op==='sub'){a=rnd(1,max);b=rnd(1,a);answer=a-b;s='−'}if(op==='mul'){let m=d==='easy'?9:d==='normal'?12:20;a=rnd(2,m);b=rnd(2,m);answer=a*b;s='×'}if(op==='div'){let m=d==='easy'?9:d==='normal'?12:20;b=rnd(2,m);answer=rnd(2,m);a=b*answer;s='÷'}$('question').textContent=`${a} ${s} ${b} = ?`}
+function vals(n){let s=new Set([answer]);while(s.size<n){let spread=Math.max(8,Math.ceil(Math.abs(answer)*.35)),v=answer+rnd(-spread,spread);if(v<0)v=rnd(0,spread);s.add(v)}return[...s].sort(()=>Math.random()-.5)}
+function addBatch(){if(locked)return;batch++;let n=+$('choices').value,arr=vals(n),cols=Math.min(4,n);arr.forEach((v,i)=>{let node=document.createElement('button');node.className='drop';node.textContent=(Math.random()>.5?'⭐ ':'🎈 ')+v;let col=i%cols,row=Math.floor(i/cols),left=5+col*(90/(cols-1||1)),y=-80-row*88-rnd(0,45);node.style.left=`calc(${left}% - 46px)`;node.style.top=y+'px';field.appendChild(node);let d={node,value:v,y,dead:false,batch};drops.push(d);node.onclick=()=>clickDrop(d)})}
+function clickDrop(d){if(!running||locked||d.dead)return;if(d.value===answer){score+=10;correct++;stats();status.className='status ok';status.textContent='✅ 答對！+10 分';boom(d);finish(500)}else{wrong++;score-=penalty();stats();status.className='status bad';status.textContent=`❌ 答錯！-${penalty()} 分`;boom(d);if($('wrongAction').value==='next')finish(500)}}
+function boom(d){d.dead=true;d.node.textContent='💥';d.node.classList.add('boom');setTimeout(()=>d.node.remove(),280)}
+function animate(ts){if(!running||locked)return;if(!last)last=ts;let dt=Math.min(32,ts-last);last=ts,speed=+$('speed').value*dt*.09,h=field.clientHeight;drops.forEach(d=>{if(!d.dead){d.y+=speed;d.node.style.top=d.y+'px';if(d.y>h+70){d.dead=true;d.node.remove()}}});drops=drops.filter(d=>!d.dead);if(drops.length===0&&timeLeft>0)addBatch();raf=requestAnimationFrame(animate)}
+function startTimer(){timerId=setInterval(()=>{if(!running||locked)return;timeLeft--;$('timer').textContent=Math.max(0,timeLeft);if(timeLeft<=0){status.className='status bad';status.textContent='⏰ 時間到！正確答案是 '+answer;finish(850)}},1000)}
+function finish(delay){if(locked)return;locked=true;clearInterval(timerId);cancelAnimationFrame(raf);setTimeout(()=>{if(running)newRound()},delay)}
+function clearDrops(){drops.forEach(d=>d.node.remove());drops=[]}
+function newRound(){clearInterval(timerId);cancelAnimationFrame(raf);clearDrops();locked=false;last=0;batch=0;question();timeLeft=+$('countdown').value;$('timer').textContent=timeLeft;addBatch();startTimer();raf=requestAnimationFrame(animate)}
+$('start').onclick=()=>{running=true;score=correct=wrong=0;stats();status.className='status';status.textContent='開始！';newRound()}
+})();
+</script></body></html>
