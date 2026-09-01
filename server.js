@@ -26,4 +26,4 @@ io.on("connection",s=>{
  s.on("answer:result",(d,cb)=>{const r=rooms.get(d.code),p=r?.players[d.token];if(!r||!p||r.status!=="playing")return cb?.({ok:false});if(d.type==="correct"){p.correct++;p.score+=+r.settings.correctPoints}else if(d.type==="wrong"){p.wrong++;p.score+=+r.settings.wrongPoints}else if(d.type==="timeout"){p.timeout++;p.score+=+r.settings.timeoutPoints}emit(d.code);if((r.settings.finishMode==="target"||r.settings.finishMode==="first")&&p.correct>=+r.settings.targetCorrect)finish(d.code);cb?.({ok:true,player:p})});
 });
 app.get("/admin",(q,res)=>res.sendFile(path.join(__dirname,"admin.html")));
-server.listen(process.env.PORT||3000,()=>console.log("極速答題王 V1.2 running"));
+server.listen(process.env.PORT||3000,()=>console.log("極速答題王 V1.3 running"));
