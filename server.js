@@ -113,5 +113,6 @@ io.on("connection",socket=>{
     cb?.({ok:true,player:p});
   });
 });
+app.get("/",(req,res)=>res.sendFile(path.join(__dirname,"admin.html")));
 app.get("/admin",(req,res)=>res.sendFile(path.join(__dirname,"admin.html")));
 server.listen(process.env.PORT||3000,()=>console.log("極速答題王 V2.0 running"));
