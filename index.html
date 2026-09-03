@@ -70,6 +70,10 @@ body:before{content:"⚡  ⭐  ❓  🎮  🏆  ABC  123";position:fixed;inset:0
 .endCard{width:min(520px,92%);background:white;border-radius:28px;padding:28px 20px;box-shadow:0 18px 50px #0003;border:4px solid #8bd5ff}
 .endTitle{font-size:clamp(32px,8vw,54px);font-weight:1000;margin-bottom:14px}
 .endStats{font-size:18px;font-weight:850;line-height:1.8}
+.rankGrid{width:100%;display:grid;grid-template-columns:46px minmax(72px,1.5fr) 52px 52px 62px 64px;align-items:center;font-variant-numeric:tabular-nums}
+.rankGrid>div{padding:8px 4px;text-align:center;border-bottom:1px solid #e8e8f2;min-width:0}
+.rankGrid .rh{font-weight:950;border-bottom:2px solid #d9d9e8;white-space:nowrap}.rankGrid .rname{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.rankGrid .rscore{font-weight:950}
+@media(max-width:430px){.rankGrid{grid-template-columns:34px minmax(58px,1.35fr) 43px 43px 52px 55px;font-size:14px}.rankGrid>div{padding:7px 2px}}
 </style></head><body>
 <div id="modal" class="modal hidden"><div class="modalbox"><div id="modalBody"></div><button id="modalClose" class="btn" style="width:100%">關閉</button></div></div>
 <header class="top"><h1>⚡ 極速答題王</h1></header><main class="wrap player">
@@ -168,7 +172,16 @@ knowledge:[
 ["世界最大洲？","亞洲"],["世界最小洲？","大洋洲"],["撒哈拉沙漠位於？","非洲"],["亞馬遜雨林主要位於？","南美洲"],["埃及著名古蹟？","金字塔"],["富士山位於？","日本"]
 ],
 fun:[
-["哪個不是文具？","西瓜"],["哪個不是交通工具？","枕頭"],["哪個不是動物？","鉛筆"],["哪個不是蔬菜？","公車"],["哪個不是家具？","香蕉"],["哪個不是飲料？","鞋子"],["哪個不是衣物？","湯匙"],["哪個不是電器？","蘿蔔"],["哪個不是水果？","馬鈴薯"],["哪個不是顏色？","火車"],
+["哪個不是文具？","西瓜",["鉛筆","原子筆","橡皮擦","尺","剪刀","筆記本"]],
+["哪個不是交通工具？","枕頭",["公車","火車","腳踏車","汽車","飛機","船"]],
+["哪個不是動物？","鉛筆",["青蛙","熊貓","兔子","老虎","猴子","企鵝"]],
+["哪個不是蔬菜？","公車",["高麗菜","菠菜","蘿蔔","花椰菜","小白菜","青椒"]],
+["哪個不是家具？","香蕉",["桌子","椅子","沙發","衣櫃","書桌","床"]],
+["哪個不是飲料？","鞋子",["牛奶","果汁","豆漿","茶","咖啡","汽水"]],
+["哪個不是衣物？","湯匙",["外套","褲子","襪子","帽子","裙子","襯衫"]],
+["哪個不是電器？","蘿蔔",["冰箱","電視","電風扇","洗衣機","吹風機","冷氣"]],
+["哪個不是水果？","馬鈴薯",["蘋果","香蕉","芒果","葡萄","西瓜","草莓"]],
+["哪個不是顏色？","腳踏車",["紅色","藍色","黃色","綠色","紫色","橘色"]],
 ["🐱代表？","貓"],["🐰代表？","兔子"],["🐼代表？","熊貓"],["🐯代表？","老虎"],["🐸代表？","青蛙"],["🐵代表？","猴子"],["🐮代表？","牛"],["🐷代表？","豬"],["🦁代表？","獅子"],["🐧代表？","企鵝"],
 ["🍎代表？","蘋果"],["🍌代表？","香蕉"],["🍉代表？","西瓜"],["🍇代表？","葡萄"],["🍓代表？","草莓"],["🥕代表？","胡蘿蔔"],["🚲代表？","腳踏車"],["✈️代表？","飛機"],["🚂代表？","火車"],["🚢代表？","船"],
 ["什麼東西有腳卻不會走？","桌子"],["什麼東西有針卻不會縫衣服？","時鐘"],["什麼東西有眼卻看不見？","針"],["什麼東西有頁卻不是樹葉？","書"],["什麼東西有鍵卻不是門鎖？","鍵盤"],["什麼東西會響卻沒有嘴？","鈴鐺"],["什麼東西能照出你卻不是相機？","鏡子"],["什麼東西越吹越大？","氣球"],["什麼東西下雨時會張開？","雨傘"],["什麼東西白天常看不見、夜晚常看見？","星星"],
@@ -177,8 +190,10 @@ fun:[
 const fallbackWrong=["蘋果","桌子","天空","鉛筆","公車","月亮","雨傘","白色","公園","書本","水杯","鞋子"];
 for(const k of Object.keys(extraFacts)){
  const answers=extraFacts[k].map(x=>x[1]);
- extraFacts[k].forEach(([q,a],idx)=>{
-   const pool=[...new Set([...answers.filter(x=>x!==a),...fallbackWrong])];
+ extraFacts[k].forEach(([q,a,customWrongs],idx)=>{
+   const pool=customWrongs?.length
+     ? [...new Set(customWrongs.filter(x=>x!==a))]
+     : [...new Set([...answers.filter(x=>x!==a),...fallbackWrong])];
    banks[k].push([q,a,shuffle(pool).slice(0,9)]);
  });
 }
@@ -281,9 +296,11 @@ function beginAnswerPhase(setup){
     // 答案改為「不同時間陸續掉落」：
     // 第一顆很快出現，後面每顆再隨機間隔 0.4～1.2 秒，
     // 使用累積延遲，避免看起來像整排一起掉。
-    let delay=120+Math.random()*220;
+    const speedMode=room.settings.fallSpeed||"medium";
+    const gap=speedMode==="slow"?[750,1450]:speedMode==="fast"?[240,620]:[430,950];
+    let delay=100+Math.random()*180;
     setup.arr.forEach((t,i)=>{
-      if(i>0)delay+=400+Math.random()*800;
+      if(i>0)delay+=gap[0]+Math.random()*(gap[1]-gap[0]);
       spawn(t,t===current[1],setup.n,delay);
     });
   }
@@ -357,22 +374,26 @@ function createDrop(txt,correct,n){
   d.style.setProperty("--drop-color",dropColors[Math.floor(Math.random()*dropColors.length)]);
   $("game").appendChild(d);
   let w=d.offsetWidth,h=d.offsetHeight,x=chooseSpawnX(w),y=fallTop();
-  let speed=room.settings.fallSpeed==="fast"?1.65:room.settings.fallSpeed==="slow"?.78:1.12;
+  const speedMode=room.settings.fallSpeed||"medium";
+  const speed=speedMode==="fast"?1.85:speedMode==="slow"?.58:1.05;
+  const swayBase=speedMode==="fast"?1.18:speedMode==="slow"?.58:.88;
   let m={
     el:d,x,y,w,h,txt,correct,n,
     vy:(.72+Math.random()*.42)*speed,
-    vx:(Math.random()-.5)*.45,
+    vx:(Math.random()-.5)*(speedMode==="fast"?.58:speedMode==="slow"?.22:.4),
     phase:Math.random()*Math.PI*2,
-    sway:.35+Math.random()*.55,
-    freq:.012+Math.random()*.012,
-    drift:(Math.random()-.5)*.018
+    sway:(.35+Math.random()*.55)*swayBase,
+    freq:(.012+Math.random()*.012)*(speedMode==="fast"?1.22:speedMode==="slow"?.82:1),
+    drift:(Math.random()-.5)*(speedMode==="fast"?.022:speedMode==="slow"?.010:.017)
   };
   movers.push(m);d.onclick=()=>handleAnswer(d,correct);
   if(!window._physicsRAF)physics()
 }
 function scheduleReplacement(m){
   if(answered||room?.status!=="playing"||room.settings.playMode==="fixed")return;
-  let t=setTimeout(()=>createDrop(m.txt,m.correct,m.n),400+Math.random()*800);respawnTimers.push(t)
+  const sm=room.settings.fallSpeed||"medium";
+  const wait=sm==="slow"?700+Math.random()*900:sm==="fast"?220+Math.random()*420:400+Math.random()*700;
+  let t=setTimeout(()=>createDrop(m.txt,m.correct,m.n),wait);respawnTimers.push(t)
 }
 function handleAnswer(el,correct){
   if(answered||room?.status!=="playing")return;
@@ -431,7 +452,8 @@ function physics(){
   }
 }
 function rankHtml(ranking){
-  return `<div style="overflow:auto"><table style="width:100%;border-collapse:collapse"><thead><tr><th>排名</th><th>玩家</th><th>答對</th><th>答錯</th><th>未作答</th><th>分數</th></tr></thead><tbody>${(ranking||[]).map((p,i)=>`<tr><td>${i+1}</td><td>${p.name}</td><td>${p.correct}</td><td>${p.wrong}</td><td>${p.timeout}</td><td><b>${p.score}</b></td></tr>`).join("")}</tbody></table></div>`
+ const rows=(ranking||[]).map((p,i)=>`<div>${i+1}</div><div class="rname">${p.name}</div><div>${p.correct}</div><div>${p.wrong}</div><div>${p.timeout}</div><div class="rscore">${p.score}</div>`).join("");
+ return `<div class="rankGrid"><div class="rh">排名</div><div class="rh">玩家</div><div class="rh">答對</div><div class="rh">答錯</div><div class="rh">未作答</div><div class="rh">分數</div>${rows}</div>`
 }
 function openRankModal(ranking=room?.ranking||[]){
   $("modalBody").innerHTML=`<h2>🏆 排行榜</h2>${rankHtml(ranking)}`;$("modal").classList.remove("hidden")
